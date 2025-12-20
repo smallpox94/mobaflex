@@ -1,14 +1,6 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿#include "MobaFlexPlayerController.h"
 
-
-#include "MobaFlexPlayerController.h"
-
-void AMobaFlexPlayerController::SetupInputComponent()
-{
-	Super::SetupInputComponent();
-
-	
-}
+#include "EnhancedInputComponent.h"
 
 void AMobaFlexPlayerController::BeginPlay()
 {
@@ -16,9 +8,36 @@ void AMobaFlexPlayerController::BeginPlay()
 
 	if (ULocalPlayer* localPlayer = GetLocalPlayer())
 	{
-		if (UEnhancedInputLocalPlayerSubsystem* InputComponent = localPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
+		if (UEnhancedInputLocalPlayerSubsystem* InputSubSystem = localPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 		{
-			InputComponent->AddMappingContext(InputMapping, 0);
+			InputSubSystem->AddMappingContext(InputMapping, 0);
+			
 		}
 	}
 }
+
+void AMobaFlexPlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(InputComponent);
+
+	EnhancedInput->BindAction(this->MoveAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::Move);
+	EnhancedInput->BindAction(this->LookAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::Look);
+	EnhancedInput->BindAction(this->JumpAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::Jump);
+}
+
+void AMobaFlexPlayerController::Move(const FInputActionInstance& InputActionInstance)
+{
+	
+}
+
+void AMobaFlexPlayerController::Look(const FInputActionInstance& InputActionInstance)
+{
+	
+}
+
+void AMobaFlexPlayerController::Jump(const FInputActionInstance& InputActionInstance)
+{
+	
+}
+
