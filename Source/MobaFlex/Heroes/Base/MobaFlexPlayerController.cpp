@@ -1,6 +1,9 @@
 ﻿#include "MobaFlexPlayerController.h"
 
 #include "EnhancedInputComponent.h"
+#include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 void AMobaFlexPlayerController::BeginPlay()
 {
@@ -10,8 +13,7 @@ void AMobaFlexPlayerController::BeginPlay()
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* InputSubSystem = localPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 		{
-			InputSubSystem->AddMappingContext(InputMapping, 0);
-			
+			InputSubSystem->AddMappingContext(InputMapping,0);
 		}
 	}
 }
@@ -19,25 +21,41 @@ void AMobaFlexPlayerController::BeginPlay()
 void AMobaFlexPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(InputComponent);
-
-	EnhancedInput->BindAction(this->MoveAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::Move);
-	EnhancedInput->BindAction(this->LookAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::Look);
-	EnhancedInput->BindAction(this->JumpAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::Jump);
+	
+	if (UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(InputComponent))
+	{
+		EnhancedInput->BindAction(this->MoveAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::Move);
+		EnhancedInput->BindAction(this->LookAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::Look);
+		EnhancedInput->BindAction(this->JumpAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::Jump);
+	}
 }
 
 void AMobaFlexPlayerController::Move(const FInputActionInstance& InputActionInstance)
 {
-	
+	FVector2D InputValue = InputActionInstance.GetValue().Get<FVector2D>();
+	if (APawn* pawn = GetPawn())
+	{
+		FRotator rotator = FRotator(0.0f, GetControlRotation().Yaw, 0.0f);
+		FVector forwardVector = rotator.Vector();
+		FVector rightVector = UKismetMathLibrary::GetRightVector(rotator);
+		FVector finalVector = forwardVector * InputValue.X + rightVector * InputValue.Y;
+		pawn->AddMovementInput(finalVector);
+	}
 }
 
 void AMobaFlexPlayerController::Look(const FInputActionInstance& InputActionInstance)
 {
-	
+	FVector2D InputValue = InputActionInstance.GetValue().Get<FVector2D>();
+	double deltaSec = UGameplayStatics::GetWorldDeltaSeconds(GetWorld());
+	AddYawInput(InputValue.X * deltaSec * TurnRate);
+	AddPitchInput(InputValue.Y * deltaSec * LookUp);
 }
 
 void AMobaFlexPlayerController::Jump(const FInputActionInstance& InputActionInstance)
 {
-	
+	if (ACharacter* character = Cast<ACharacter>(GetPawn()))
+	{
+		character->Jump();
+	}
 }
 
