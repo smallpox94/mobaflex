@@ -1,6 +1,7 @@
 ﻿#include "MobaFlexPlayerController.h"
 
 #include "EnhancedInputComponent.h"
+#include "MobaFlexCharacterBase.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -27,6 +28,7 @@ void AMobaFlexPlayerController::SetupInputComponent()
 		EnhancedInput->BindAction(this->MoveAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::Move);
 		EnhancedInput->BindAction(this->LookAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::Look);
 		EnhancedInput->BindAction(this->JumpAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::Jump);
+		EnhancedInput->BindAction(this->BasicAttackAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::BasicAttack);
 	}
 }
 
@@ -56,6 +58,14 @@ void AMobaFlexPlayerController::Jump(const FInputActionInstance& InputActionInst
 	if (ACharacter* character = Cast<ACharacter>(GetPawn()))
 	{
 		character->Jump();
+	}
+}
+
+void AMobaFlexPlayerController::BasicAttack(const FInputActionInstance& InputActionInstance)
+{
+	if (AMobaFlexCharacterBase* mobaCharacter = Cast<AMobaFlexCharacterBase>(GetPawn()))
+	{
+		mobaCharacter->BasicAttack();
 	}
 }
 

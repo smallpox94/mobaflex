@@ -2,6 +2,7 @@
 
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AMobaFlexCharacterBase::AMobaFlexCharacterBase()
@@ -12,16 +13,21 @@ AMobaFlexCharacterBase::AMobaFlexCharacterBase()
 	CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArm"));
 	CameraSpringArm->SetupAttachment(GetCapsuleComponent());
 	CameraSpringArm->bUsePawnControlRotation = true;
-	
+	CameraSpringArm->TargetOffset = FVector(0.0f,0.0f,0.0f);
+	CameraSpringArm->TargetArmLength = 350.0f;
+
 	CameraInputComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraInputComponent->SetupAttachment(CameraSpringArm);
+
+	USkeletalMeshComponent* SkeletalMeshComponent = GetMesh();
+	SkeletalMeshComponent->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
+	SkeletalMeshComponent->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 }
 
 // Called when the game starts or when spawned
 void AMobaFlexCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -34,5 +40,11 @@ void AMobaFlexCharacterBase::Tick(float DeltaTime)
 void AMobaFlexCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+void AMobaFlexCharacterBase::BasicAttack()
+{
+	double currentTime = UGameplayStatics::GetTimeSeconds(GetWorld());
+	// float duration = PlayAnimMontage(BasicAttackAnimations[0]);
 }
 

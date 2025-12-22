@@ -19,6 +19,7 @@ protected:
 	void Move(const FInputActionInstance& InputActionInstance);
 	void Look(const FInputActionInstance& InputActionInstance);
 	void Jump(const FInputActionInstance& InputActionInstance);
+	void BasicAttack(const FInputActionInstance& InputActionInstance);
 
 public:
 	// *** Input Parameters
@@ -35,4 +36,6 @@ public:
 	TObjectPtr<UInputAction> LookAction;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	TObjectPtr<UInputAction> JumpAction;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	TObjectPtr<UInputAction> BasicAttackAction;
 };
