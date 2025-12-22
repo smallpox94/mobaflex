@@ -1,5 +1,6 @@
 ﻿#include "MobaFlexCharacterBase.h"
 
+#include "AbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -22,12 +23,26 @@ AMobaFlexCharacterBase::AMobaFlexCharacterBase()
 	USkeletalMeshComponent* SkeletalMeshComponent = GetMesh();
 	SkeletalMeshComponent->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 	SkeletalMeshComponent->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+
+	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	PlayBaseAttributeSet = CreateDefaultSubobject<UPlayBaseAttributeSet>(TEXT("PlayBaseAttributeSet"));
 }
 
 // Called when the game starts or when spawned
 void AMobaFlexCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if(AbilitySystemComponent)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+		if(PlayBaseAttributeSet)
+		{
+			PlayBaseAttributeSet->OnHealthChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnHealthChanged);
+			PlayBaseAttributeSet->OnManaChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnManaChanged);
+			PlayBaseAttributeSet->OnArmorChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnArmorChanged);
+		}
+	}
 }
 
 // Called every frame
@@ -46,5 +61,25 @@ void AMobaFlexCharacterBase::BasicAttack()
 {
 	double currentTime = UGameplayStatics::GetTimeSeconds(GetWorld());
 	// float duration = PlayAnimMontage(BasicAttackAnimations[0]);
+}
+
+UAbilitySystemComponent* AMobaFlexCharacterBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
+void AMobaFlexCharacterBase::OnHealthChanged(float EffectMagnitude, float NewValue)
+{
+	PlayBaseAttributeSet->Health.SetCurrentValue(FMath::Max(NewValue,0.0f));
+}
+
+void AMobaFlexCharacterBase::OnManaChanged(float EffectMagnitude, float NewValue)
+{
+	PlayBaseAttributeSet->Mana.SetCurrentValue(FMath::Max(NewValue,0.0f));
+}
+
+void AMobaFlexCharacterBase::OnArmorChanged(float EffectMagnitude, float NewValue)
+{
+	PlayBaseAttributeSet->Armor.SetCurrentValue(FMath::Max(NewValue,0.0f));
 }
 

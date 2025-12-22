@@ -1,13 +1,15 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemInterface.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "MobaFlex/Heroes/GAS/PlayBaseAttributeSet.h"
 #include "MobaFlexCharacterBase.generated.h"
 
 UCLASS()
-class MOBAFLEX_API AMobaFlexCharacterBase : public ACharacter
+class MOBAFLEX_API AMobaFlexCharacterBase : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -16,10 +18,15 @@ public:
 	AMobaFlexCharacterBase();
 
 protected:
+	UFUNCTION()
+	virtual void OnHealthChanged(float EffectMagnitude, float NewValue);
+	UFUNCTION()
+	virtual void OnManaChanged(float EffectMagnitude, float NewValue);
+	UFUNCTION()
+	virtual void OnArmorChanged(float EffectMagnitude, float NewValue);
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	
 
 public:
 	// Called every frame
@@ -34,4 +41,10 @@ public:
 	TObjectPtr<USpringArmComponent> CameraSpringArm;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	TObjectPtr<UCameraComponent> CameraInputComponent;
+
+	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+	TObjectPtr<UPlayBaseAttributeSet> PlayBaseAttributeSet;
 };
