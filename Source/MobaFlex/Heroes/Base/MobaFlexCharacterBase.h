@@ -24,6 +24,8 @@ protected:
 	virtual void OnManaChanged(float EffectMagnitude, float NewValue);
 	UFUNCTION()
 	virtual void OnArmorChanged(float EffectMagnitude, float NewValue);
+	UFUNCTION()
+	void OnStaminaChanged(float EffectMagnitude, float NewValue);
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

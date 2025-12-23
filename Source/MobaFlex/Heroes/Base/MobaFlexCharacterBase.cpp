@@ -41,6 +41,7 @@ void AMobaFlexCharacterBase::BeginPlay()
 			PlayBaseAttributeSet->OnHealthChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnHealthChanged);
 			PlayBaseAttributeSet->OnManaChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnManaChanged);
 			PlayBaseAttributeSet->OnArmorChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnArmorChanged);
+			PlayBaseAttributeSet->OnStaminaChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnStaminaChanged);
 		}
 	}
 }
@@ -60,7 +61,6 @@ void AMobaFlexCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerIn
 void AMobaFlexCharacterBase::BasicAttack()
 {
 	double currentTime = UGameplayStatics::GetTimeSeconds(GetWorld());
-	// float duration = PlayAnimMontage(BasicAttackAnimations[0]);
 }
 
 UAbilitySystemComponent* AMobaFlexCharacterBase::GetAbilitySystemComponent() const
@@ -71,6 +71,10 @@ UAbilitySystemComponent* AMobaFlexCharacterBase::GetAbilitySystemComponent() con
 void AMobaFlexCharacterBase::OnHealthChanged(float EffectMagnitude, float NewValue)
 {
 	PlayBaseAttributeSet->Health.SetCurrentValue(FMath::Max(NewValue,0.0f));
+	if(NewValue <= 0)
+	{
+		Destroy();
+	}
 }
 
 void AMobaFlexCharacterBase::OnManaChanged(float EffectMagnitude, float NewValue)
@@ -81,5 +85,10 @@ void AMobaFlexCharacterBase::OnManaChanged(float EffectMagnitude, float NewValue
 void AMobaFlexCharacterBase::OnArmorChanged(float EffectMagnitude, float NewValue)
 {
 	PlayBaseAttributeSet->Armor.SetCurrentValue(FMath::Max(NewValue,0.0f));
+}
+
+void AMobaFlexCharacterBase::OnStaminaChanged(float EffectMagnitude, float NewValue)
+{
+	PlayBaseAttributeSet->Stamina.SetCurrentValue(FMath::Max(NewValue,0.0f));
 }
 

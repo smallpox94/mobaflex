@@ -31,4 +31,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FGameplayAttributeData Mana;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, Mana);
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData Stamina;
+	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, Stamina);
 };
