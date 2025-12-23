@@ -6,6 +6,8 @@
 #include "Abilities/GameplayAbility.h"
 #include "BurnAbility.generated.h"
 
+class UGameplayEffect;
+
 /**
  * 
  */
@@ -16,5 +18,9 @@ class MOBAFLEX_API UBurnAbility : public UGameplayAbility
 public:
 	UBurnAbility();
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	TSubclassOf<UGameplayEffect> BurnEffect;
 
 };
