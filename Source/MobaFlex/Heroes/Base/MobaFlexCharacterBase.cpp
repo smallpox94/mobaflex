@@ -38,6 +38,11 @@ void AMobaFlexCharacterBase::BeginPlay()
 		AbilitySystemComponent->InitAbilityActorInfo(this, this);
 		if(PlayBaseAttributeSet)
 		{
+			PlayBaseAttributeSet->Health.SetBaseValue(Health);
+			PlayBaseAttributeSet->Mana.SetBaseValue(Mana);
+			PlayBaseAttributeSet->Stamina.SetBaseValue(Stamina);
+			PlayBaseAttributeSet->Armor.SetBaseValue(Armor);
+			
 			PlayBaseAttributeSet->OnHealthChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnHealthChanged);
 			PlayBaseAttributeSet->OnManaChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnManaChanged);
 			PlayBaseAttributeSet->OnArmorChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnArmorChanged);
@@ -70,6 +75,8 @@ UAbilitySystemComponent* AMobaFlexCharacterBase::GetAbilitySystemComponent() con
 
 void AMobaFlexCharacterBase::OnHealthChanged(float EffectMagnitude, float NewValue)
 {
+	FString Msg = FString::Printf(TEXT("Health changed by %.2f to %.2f"), EffectMagnitude, NewValue);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Msg);
 	PlayBaseAttributeSet->Health.SetCurrentValue(FMath::Max(NewValue,0.0f));
 	if(NewValue <= 0)
 	{
@@ -79,16 +86,22 @@ void AMobaFlexCharacterBase::OnHealthChanged(float EffectMagnitude, float NewVal
 
 void AMobaFlexCharacterBase::OnManaChanged(float EffectMagnitude, float NewValue)
 {
+	FString Msg = FString::Printf(TEXT("Mana changed by %.2f to %.2f"), EffectMagnitude, NewValue);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, Msg);
 	PlayBaseAttributeSet->Mana.SetCurrentValue(FMath::Max(NewValue,0.0f));
 }
 
 void AMobaFlexCharacterBase::OnArmorChanged(float EffectMagnitude, float NewValue)
 {
+	FString Msg = FString::Printf(TEXT("Armor changed by %.2f to %.2f"), EffectMagnitude, NewValue);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, Msg);
 	PlayBaseAttributeSet->Armor.SetCurrentValue(FMath::Max(NewValue,0.0f));
 }
 
 void AMobaFlexCharacterBase::OnStaminaChanged(float EffectMagnitude, float NewValue)
 {
+	FString Msg = FString::Printf(TEXT("Stamina changed by %.2f to %.2f"), EffectMagnitude, NewValue);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, Msg);
 	PlayBaseAttributeSet->Stamina.SetCurrentValue(FMath::Max(NewValue,0.0f));
 }
 

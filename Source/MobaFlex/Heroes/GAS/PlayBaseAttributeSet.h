@@ -20,19 +20,19 @@ private:
 public:
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FGameplayAttributeData Health;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, Health);
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FGameplayAttributeData Armor;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, Armor);
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FGameplayAttributeData Mana;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, Mana);
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FGameplayAttributeData Stamina;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, Stamina);
 };

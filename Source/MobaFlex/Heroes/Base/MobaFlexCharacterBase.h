@@ -49,4 +49,13 @@ public:
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	TObjectPtr<UPlayBaseAttributeSet> PlayBaseAttributeSet;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attribute Values")
+	float Health = 100.0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attribute Values")
+	float Mana = 100.0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attribute Values")
+	float Stamina = 100.0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attribute Values")
+	float Armor = 0.0;
 };
