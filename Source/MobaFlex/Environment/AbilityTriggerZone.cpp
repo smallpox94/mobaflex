@@ -29,16 +29,27 @@ void AAbilityTriggerZone::BeginPlay()
 
 void AAbilityTriggerZone::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    for(TSubclassOf<UGameplayAbility> Ability : AbilitiesToApply)
-    {
-        AbilityHelper::GiveAbility(OtherActor, Ability, ActivateOnApplying);
-    }
+	for (TSubclassOf<UGameplayEffect> Effect : EffectsEntering)
+	{
+		AbilityHelper::AddEffect(OtherActor, Effect, true);
+	}
 }
 
 void AAbilityTriggerZone::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	for (TSubclassOf<UGameplayEffect> Effect : EffectsEntering)
+	{
+		
+	}
+
+	for (TSubclassOf<UGameplayEffect> Effect : EffectsLeaving)
+	{
+		
+	}
+	/*
 	for(TSubclassOf<UGameplayAbility> Ability : AbilitiesToApply)
 	{
 	    AbilityHelper::RemoveAbility(OtherActor, Ability);
 	}
+	*/
 }

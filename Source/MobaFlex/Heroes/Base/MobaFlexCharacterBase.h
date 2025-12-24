@@ -27,7 +27,8 @@ protected:
 	virtual void OnArmorChanged(float EffectMagnitude, float NewValue);
 	UFUNCTION()
 	void OnStaminaChanged(float EffectMagnitude, float NewValue);
-	
+	void Die();
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -45,6 +46,9 @@ public:
 	TObjectPtr<USpringArmComponent> CameraSpringArm;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	TObjectPtr<UCameraComponent> CameraInputComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	TObjectPtr<UAnimSequenceBase> DeathAnimation;
 
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")

@@ -14,6 +14,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FPlayAttributeEvent, float, EffectM
 UCLASS()
 class MOBAFLEX_API UPlayBaseAttributeSet : public UAttributeSet
 {
+public:
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+
 private:
 	GENERATED_BODY()
 

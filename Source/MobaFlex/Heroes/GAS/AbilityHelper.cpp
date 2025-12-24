@@ -2,6 +2,9 @@
 
 
 #include "AbilityHelper.h"
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemInterface.h"
+#include "GameplayEffect.h"
 
 
 bool AbilityHelper::GiveAbility(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass, bool ActivateOnApply)
@@ -14,16 +17,13 @@ bool AbilityHelper::GiveAbility(AActor* actor, TSubclassOf<UGameplayAbility> Abi
 			{
 				if (UAbilitySystemComponent* AbilitySystemComponent = AbilitySystemInterface->GetAbilitySystemComponent())
 				{
-					if (AbilityClass)
+					FGameplayAbilitySpec AbilitySpec(AbilityClass);
+					FGameplayAbilitySpecHandle specHandle = AbilitySystemComponent->GiveAbility(AbilitySpec);
+					if (ActivateOnApply)
 					{
-						FGameplayAbilitySpec AbilitySpec(AbilityClass);
-						FGameplayAbilitySpecHandle specHandle = AbilitySystemComponent->GiveAbility(AbilitySpec);
-						if (ActivateOnApply)
-						{
-							return AbilitySystemComponent->TryActivateAbilityByClass(AbilityClass);
-						}
-						return true;
+						return AbilitySystemComponent->TryActivateAbilityByClass(AbilityClass);
 					}
+					return true;
 				}
 			}
 		}
@@ -92,4 +92,83 @@ bool AbilityHelper::DeactivateAbility(AActor* actor, TSubclassOf<UGameplayAbilit
  		}
 	}
 	return false;
+}
+
+bool AbilityHelper::AddEffect(AActor* actor, TSubclassOf<UGameplayEffect> EffectClass, bool ReplaceIfExist)
+{
+	if(EffectClass)
+	{
+		if(AMobaFlexCharacterBase* Character = Cast<AMobaFlexCharacterBase>(actor))
+		{
+			if (IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(Character))
+			{
+				if (UAbilitySystemComponent* AbilitySystemComponent = AbilitySystemInterface->GetAbilitySystemComponent())
+				{
+                    if(ReplaceIfExist)
+                    {
+                        FGameplayEffectQuery Query;
+                        Query.EffectDefinition = EffectClass;
+                        AbilitySystemComponent->RemoveActiveEffects(Query);
+                    }
+
+					FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+					EffectContext.AddSourceObject(actor);
+					FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(EffectClass, 1, EffectContext);
+					if(SpecHandle.IsValid())
+					{
+						AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+						return true;
+					}
+				}
+			}
+		}
+	}
+	return false;
+}
+
+bool AbilityHelper::RemoveEffect(AActor* actor, TSubclassOf<UGameplayEffect> EffectClass, bool ReplaceIfExist)
+{
+	if(EffectClass)
+	{
+		if(AMobaFlexCharacterBase* Character = Cast<AMobaFlexCharacterBase>(actor))
+		{
+			if (IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(Character))
+			{
+				if (UAbilitySystemComponent* AbilitySystemComponent = AbilitySystemInterface->GetAbilitySystemComponent())
+				{
+					FGameplayEffectQuery Query;
+                    Query.EffectDefinition = EffectClass;
+                    AbilitySystemComponent->RemoveActiveEffects(Query);
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+bool AbilityHelper::ClearAllEffects(AActor* actor)
+{
+	if(actor)
+	{
+		if(AMobaFlexCharacterBase* Character = Cast<AMobaFlexCharacterBase>(actor))
+		{
+			if (IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(Character))
+			{
+				if (UAbilitySystemComponent* AbilitySystemComponent = AbilitySystemInterface->GetAbilitySystemComponent())
+				{
+					FGameplayEffectQuery Query;
+					AbilitySystemComponent->RemoveActiveEffects(Query);
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
+FGameplayTag AbilityHelper::FindGameplayTag(FString TagName)
+{
+	return FGameplayTag::RequestGameplayTag(FName(TagName));
 }

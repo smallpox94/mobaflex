@@ -6,6 +6,7 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
 #include "GameplayAbilitySpec.h"
+#include "GameplayEffect.h"
 #include "AbilityTriggerZone.generated.h"
 
 class UGameplayAbility;
@@ -32,8 +33,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UBoxComponent> TriggerZone;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Abilities")
-	TArray<TSubclassOf<UGameplayAbility>> AbilitiesToApply;
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Abilities")
+	// TArray<TSubclassOf<UGameplayAbility>> AbilitiesToApply;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	TArray<TSubclassOf<UGameplayEffect>> EffectsEntering;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	TArray<TSubclassOf<UGameplayEffect>> EffectsLeaving;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool ActivateOnApplying = true;

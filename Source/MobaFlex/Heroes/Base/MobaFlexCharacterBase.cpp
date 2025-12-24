@@ -1,6 +1,7 @@
 ﻿#include "MobaFlexCharacterBase.h"
 
 #include "AbilitySystemComponent.h"
+#include "MobaFlexPlayerController.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -89,7 +90,7 @@ void AMobaFlexCharacterBase::OnHealthChanged(float EffectMagnitude, float NewVal
 	PlayBaseAttributeSet->Health.SetCurrentValue(FMath::Max(NewValue,0.0f));
 	if(NewValue <= 0)
 	{
-		Destroy();
+		Die();
 	}
 }
 
@@ -114,3 +115,28 @@ void AMobaFlexCharacterBase::OnStaminaChanged(float EffectMagnitude, float NewVa
 	PlayBaseAttributeSet->Stamina.SetCurrentValue(FMath::Max(NewValue,0.0f));
 }
 
+void AMobaFlexCharacterBase::Die()
+{
+	// Only runs on Server
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCharacterMovement()->GravityScale = 0;
+	GetCharacterMovement()->Velocity = FVector(0);
+
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->CancelAllAbilities();
+		AbilityHelper::ClearAllEffects(this);
+	}
+
+	AMobaFlexPlayerController* PC = Cast<AMobaFlexPlayerController>(GetController());
+	PC->DisableInput(PC);
+	
+	if (DeathAnimation)
+	{
+		GetMesh()->PlayAnimation(DeathAnimation, false);
+	}
+	else
+	{
+		Destroy();
+	}
+}
