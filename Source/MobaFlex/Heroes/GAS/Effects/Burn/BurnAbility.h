@@ -24,5 +24,6 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	TSubclassOf<UGameplayEffect> BurnEffect;
-
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	TSubclassOf<UGameplayEffect> BurnInZoneEffect;
 };

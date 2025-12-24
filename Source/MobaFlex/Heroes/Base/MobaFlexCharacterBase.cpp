@@ -4,6 +4,8 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "MobaFlex/Heroes/GAS/AbilityHelper.h"
+#include "MobaFlex/Heroes/GAS/Effects/Jump/JumpAbility.h"
 
 // Sets default values
 AMobaFlexCharacterBase::AMobaFlexCharacterBase()
@@ -47,6 +49,8 @@ void AMobaFlexCharacterBase::BeginPlay()
 			PlayBaseAttributeSet->OnManaChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnManaChanged);
 			PlayBaseAttributeSet->OnArmorChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnArmorChanged);
 			PlayBaseAttributeSet->OnStaminaChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnStaminaChanged);
+			//Giving Jump Ability
+			AbilityHelper::GiveAbility(this, UJumpAbility::StaticClass(), false);
 		}
 	}
 }
@@ -66,6 +70,11 @@ void AMobaFlexCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerIn
 void AMobaFlexCharacterBase::BasicAttack()
 {
 	double currentTime = UGameplayStatics::GetTimeSeconds(GetWorld());
+}
+
+void AMobaFlexCharacterBase::JumpAbility()
+{
+	AbilityHelper::ActivateAbility(this, UJumpAbility::StaticClass());
 }
 
 UAbilitySystemComponent* AMobaFlexCharacterBase::GetAbilitySystemComponent() const

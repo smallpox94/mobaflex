@@ -11,6 +11,7 @@
 UCLASS()
 class MOBAFLEX_API AMobaFlexCharacterBase : public ACharacter, public IAbilitySystemInterface
 {
+private:
 	GENERATED_BODY()
 
 public:
@@ -38,6 +39,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual void BasicAttack();
+	void JumpAbility();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	TObjectPtr<USpringArmComponent> CameraSpringArm;

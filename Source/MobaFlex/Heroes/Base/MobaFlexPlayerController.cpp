@@ -56,9 +56,9 @@ void AMobaFlexPlayerController::Look(const FInputActionInstance& InputActionInst
 
 void AMobaFlexPlayerController::Jump(const FInputActionInstance& InputActionInstance)
 {
-	if (ACharacter* character = Cast<ACharacter>(GetPawn()))
+	if (AMobaFlexCharacterBase* mobaCharacter = Cast<AMobaFlexCharacterBase>(GetPawn()))
 	{
-		character->Jump();
+		mobaCharacter->JumpAbility();
 	}
 }
 
