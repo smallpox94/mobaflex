@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "MobaFlex/Heroes/GAS/PlayBaseAttributeSet.h"
+#include "MobaFlex/UI/LocalHeroWidget.h"
 #include "MobaFlexCharacterBase.generated.h"
 
 UCLASS()
@@ -29,6 +30,18 @@ protected:
 	void OnStaminaChanged(float EffectMagnitude, float NewValue);
 	void Die();
 
+	UFUNCTION()
+	void OnMaxHealthChanged(float EffectMagnitude, float NewValue);
+	void UpdateManaUI();
+	void UpdateArmorUI();
+	void UpdateStaminaUI();
+	UFUNCTION()
+	void OnMaxManaChanged(float EffectMagnitude, float NewValue);
+	UFUNCTION()
+	void OnMaxArmorChanged(float EffectMagnitude, float NewValue);
+	UFUNCTION()
+	void OnMaxStaminaChanged(float EffectMagnitude, float NewValue);
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -51,6 +64,7 @@ public:
 	TObjectPtr<UAnimSequenceBase> DeathAnimation;
 
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	void UpdateHealthUI();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
@@ -64,4 +78,16 @@ public:
 	float Stamina = 100.0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attribute Values")
 	float Armor = 0.0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attribute Values")
+	float MaxHealth = 100.0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attribute Values")
+	float MaxMana = 100.0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attribute Values")
+	float MaxStamina = 100.0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attribute Values")
+	float MaxArmor = 0.0;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<ULocalHeroWidget> PlayerHUDClass;
+	TObjectPtr<ULocalHeroWidget> PlayerHUD;
 };

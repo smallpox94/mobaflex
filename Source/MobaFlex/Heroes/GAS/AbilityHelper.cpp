@@ -126,7 +126,7 @@ bool AbilityHelper::AddEffect(AActor* actor, TSubclassOf<UGameplayEffect> Effect
 	return false;
 }
 
-bool AbilityHelper::RemoveEffect(AActor* actor, TSubclassOf<UGameplayEffect> EffectClass, bool ReplaceIfExist)
+bool AbilityHelper::RemoveEffect(AActor* actor, TSubclassOf<UGameplayEffect> EffectClass)
 {
 	if(EffectClass)
 	{

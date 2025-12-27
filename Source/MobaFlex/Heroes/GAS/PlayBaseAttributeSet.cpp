@@ -13,7 +13,11 @@ void UPlayBaseAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePro
 	DOREPLIFETIME(UPlayBaseAttributeSet,Health)
 	DOREPLIFETIME(UPlayBaseAttributeSet,Mana)
 	DOREPLIFETIME(UPlayBaseAttributeSet,Armor)
-	DOREPLIFETIME(UPlayBaseAttributeSet,Stamina)
+	DOREPLIFETIME(UPlayBaseAttributeSet,Stamina)	
+	DOREPLIFETIME(UPlayBaseAttributeSet,MaxHealth)
+	DOREPLIFETIME(UPlayBaseAttributeSet,MaxMana)
+	DOREPLIFETIME(UPlayBaseAttributeSet,MaxArmor)
+	DOREPLIFETIME(UPlayBaseAttributeSet,MaxStamina)
 }
 
 void UPlayBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -24,4 +28,8 @@ void UPlayBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCa
 	BROADCAST_ATTRIBUTECHANGED_EVENT(Mana)
 	BROADCAST_ATTRIBUTECHANGED_EVENT(Armor)
 	BROADCAST_ATTRIBUTECHANGED_EVENT(Stamina)
+	BROADCAST_ATTRIBUTECHANGED_EVENT(MaxHealth)
+	BROADCAST_ATTRIBUTECHANGED_EVENT(MaxMana)
+	BROADCAST_ATTRIBUTECHANGED_EVENT(MaxArmor)
+	BROADCAST_ATTRIBUTECHANGED_EVENT(MaxStamina)
 }

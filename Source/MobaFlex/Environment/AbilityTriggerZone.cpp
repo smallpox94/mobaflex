@@ -1,11 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "AbilityTriggerZone.h"
 #include "AbilitySystemInterface.h"
 #include "AbilitySystemComponent.h"
 #include "MobaFlex/Heroes/GAS/AbilityHelper.h"
-
 
 // Sets default values
 AAbilityTriggerZone::AAbilityTriggerZone()
@@ -39,17 +37,11 @@ void AAbilityTriggerZone::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 {
 	for (TSubclassOf<UGameplayEffect> Effect : EffectsEntering)
 	{
-		
+		AbilityHelper::RemoveEffect(OtherActor, Effect);
 	}
 
 	for (TSubclassOf<UGameplayEffect> Effect : EffectsLeaving)
 	{
-		
+		AbilityHelper::AddEffect(OtherActor, Effect, true);
 	}
-	/*
-	for(TSubclassOf<UGameplayAbility> Ability : AbilitiesToApply)
-	{
-	    AbilityHelper::RemoveAbility(OtherActor, Ability);
-	}
-	*/
 }

@@ -14,7 +14,7 @@ public:
 	static bool ActivateAbility(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass);
 	static bool DeactivateAbility(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass);
 	static bool AddEffect(AActor* actor, TSubclassOf<UGameplayEffect> EffectClass, bool ReplaceIfExist); 
-	static bool RemoveEffect(AActor* actor, TSubclassOf<UGameplayEffect> EffectClass, bool ReplaceIfExist);
+	static bool RemoveEffect(AActor* actor, TSubclassOf<UGameplayEffect> EffectClass);
 	static bool ClearAllEffects(AActor* actor);
 	static FGameplayTag FindGameplayTag(FString TagName);
 };
