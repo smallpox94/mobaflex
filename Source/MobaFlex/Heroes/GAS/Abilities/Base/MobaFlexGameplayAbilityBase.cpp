@@ -26,14 +26,14 @@ void UMobaFlexGameplayAbilityBase::ActivateAbility(const FGameplayAbilitySpecHan
 void UMobaFlexGameplayAbilityBase::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
-}
-
-void UMobaFlexGameplayAbilityBase::OnInterruptTagAdded()
-{
-	bool bWasCancelled = true;
+	
 	for(UAbilityTask_WaitGameplayTagAdded* DeactivateTask : WaitGameplayTagAddedToDeactivate)
 	{
 		DeactivateTask->Added.Clear();
 	}
-	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, bWasCancelled);
+}
+
+void UMobaFlexGameplayAbilityBase::OnInterruptTagAdded()
+{
+	CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
 }
