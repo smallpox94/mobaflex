@@ -7,6 +7,7 @@
 #include "AbilitySystemComponent.h"
 #include "AttributeSet.h"
 #include "AttributeSetMacro.h"
+#include "AbilityHelper.h"
 #include "PlayBaseAttributeSet.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FPlayAttributeEvent, float, EffectMagnitude, float, NewValue);
@@ -14,44 +15,39 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FPlayAttributeEvent, float, EffectM
 UCLASS()
 class MOBAFLEX_API UPlayBaseAttributeSet : public UAttributeSet
 {
+	GENERATED_BODY()
+	
 public:
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
-
-private:
-	GENERATED_BODY()
-
-public:
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
 	FGameplayAttributeData Health;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, Health);
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
 	FGameplayAttributeData MaxHealth;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, MaxHealth);
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
 	FGameplayAttributeData Armor;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, Armor);
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
 	FGameplayAttributeData MaxArmor;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, MaxArmor);
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
 	FGameplayAttributeData Mana;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, Mana);
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
 	FGameplayAttributeData MaxMana;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, MaxMana);
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
 	FGameplayAttributeData Stamina;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, Stamina);
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
 	FGameplayAttributeData MaxStamina;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, MaxStamina);
+
 };

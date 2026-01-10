@@ -1,15 +1,31 @@
 ﻿#pragma once
 
-#include "CoreMinimal.h"
-
 #define PLAY_ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
 ATTRIBUTE_ACCESSORS_BASIC(ClassName, PropertyName) \
 UPROPERTY() \
-FPlayAttributeEvent On##PropertyName##Changed;
+FPlayAttributeEvent On##PropertyName##Changed; \
 
-
-#define BROADCAST_ATTRIBUTECHANGED_EVENT(PropertyName) \
+#define BROADCAST_ATTRIBUTE_CHANGED_EVENT_WITH_TAG(PropertyName) \
 if(Data.EvaluatedData.Attribute == Get##PropertyName##Attribute()) \
 { \
 	On##PropertyName##Changed.Broadcast(Data.EvaluatedData.Magnitude, Get##PropertyName()); \
-}
+	UAbilitySystemComponent* TargetASC = GetOwningAbilitySystemComponent(); \
+	if (!TargetASC) \
+	{ \
+		return; \
+	} \
+	if(Get##PropertyName() <= 0.0f) \
+	{ \
+		TargetASC->AddMinimalReplicationGameplayTag(AbilityHelper::FindGameplayTag("MobaFlex.Character.No##PropertyName##"));	\
+	} \
+	else \
+	{ \
+		TargetASC->RemoveMinimalReplicationGameplayTag(AbilityHelper::FindGameplayTag("MobaFlex.Character.No##PropertyName##")); \
+	} \
+} \
+
+#define BROADCAST_ATTRIBUTE_CHANGED_EVENT(PropertyName) \
+if(Data.EvaluatedData.Attribute == Get##PropertyName##Attribute()) \
+{ \
+	On##PropertyName##Changed.Broadcast(Data.EvaluatedData.Magnitude, Get##PropertyName()); \
+} \

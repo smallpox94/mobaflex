@@ -4,11 +4,7 @@
 #include "JumpAbility.h"
 
 #include "MobaFlex/Heroes/Base/MobaFlexCharacterBase.h"
-
-UJumpAbility::UJumpAbility()
-{
-	
-}
+#include "GameplayEffect.h"
 
 bool UJumpAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
 {
@@ -47,4 +43,3 @@ void UJumpAbility::CancelAbility(const FGameplayAbilitySpecHandle Handle, const 
 	AMobaFlexCharacterBase* character = Cast<AMobaFlexCharacterBase>(ActorInfo->AvatarActor.Get());
 	character->StopJumping();
 }
-

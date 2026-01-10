@@ -138,13 +138,11 @@ bool AbilityHelper::RemoveEffect(AActor* actor, TSubclassOf<UGameplayEffect> Eff
 				{
 					FGameplayEffectQuery Query;
                     Query.EffectDefinition = EffectClass;
-                    AbilitySystemComponent->RemoveActiveEffects(Query);
-					return true;
+					return AbilitySystemComponent->RemoveActiveEffects(Query) > 0;
 				}
 			}
 		}
 	}
-
 	return false;
 }
 
@@ -159,8 +157,7 @@ bool AbilityHelper::ClearAllEffects(AActor* actor)
 				if (UAbilitySystemComponent* AbilitySystemComponent = AbilitySystemInterface->GetAbilitySystemComponent())
 				{
 					FGameplayEffectQuery Query;
-					AbilitySystemComponent->RemoveActiveEffects(Query);
-					return true;
+					return AbilitySystemComponent->RemoveActiveEffects(Query) > 0;
 				}
 			}
 		}
