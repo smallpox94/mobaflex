@@ -8,7 +8,7 @@ public class MobaFlex : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Slate", "SlateCore", "Slate", "UMG" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Slate", "SlateCore", "Slate", "UMG", "GameplayAbilities" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  "GameplayAbilities", "GameplayTags", "GameplayTasks" });
 

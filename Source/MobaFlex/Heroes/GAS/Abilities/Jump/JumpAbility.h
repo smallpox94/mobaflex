@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
+#include "../Base/MobaFlexGameplayAbilityBase.h"
 #include "JumpAbility.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MOBAFLEX_API UJumpAbility : public UGameplayAbility
+class MOBAFLEX_API UJumpAbility : public UMobaFlexGameplayAbilityBase
 {
 public:
 	virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags = nullptr, const FGameplayTagContainer* TargetTags = nullptr, FGameplayTagContainer* OptionalRelevantTags = nullptr) const override;

@@ -16,11 +16,11 @@ if(Data.EvaluatedData.Attribute == Get##PropertyName##Attribute()) \
 	} \
 	if(Get##PropertyName() <= 0.0f) \
 	{ \
-		TargetASC->AddMinimalReplicationGameplayTag(AbilityHelper::FindGameplayTag("MobaFlex.Character.No##PropertyName##"));	\
+		TargetASC->AddMinimalReplicationGameplayTag(AbilityHelper::FindGameplayTag("MobaFlex.Character.No" #PropertyName ""));	\
 	} \
 	else \
 	{ \
-		TargetASC->RemoveMinimalReplicationGameplayTag(AbilityHelper::FindGameplayTag("MobaFlex.Character.No##PropertyName##")); \
+		TargetASC->RemoveMinimalReplicationGameplayTag(AbilityHelper::FindGameplayTag("MobaFlex.Character.No" #PropertyName "")); \
 	} \
 } \
 

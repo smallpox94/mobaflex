@@ -6,7 +6,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "MobaFlex/Heroes/GAS/AbilityHelper.h"
-#include "MobaFlex/Heroes/GAS/Effects/Jump/JumpAbility.h"
 
 // Sets default values
 AMobaFlexCharacterBase::AMobaFlexCharacterBase()

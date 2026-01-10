@@ -39,25 +39,15 @@ void UUSprintAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,	c
 			EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 			return;
 		}
+		
+		Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+		
 		AMobaFlexCharacterBase* character = Cast<AMobaFlexCharacterBase>(ActorInfo->AvatarActor.Get());
 		if(character)
 		{
 			character->SetSprint(true);
 		}
 	}
-}
-
-void UUSprintAbility::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)
-{
-	if(HasAuthorityOrPredictionKey(ActorInfo, &ActivationInfo))
-	{
-		AMobaFlexCharacterBase* character = Cast<AMobaFlexCharacterBase>(ActorInfo->AvatarActor.Get());
-		if(character)
-		{
-			character->SetSprint(false);
-		}
-	}
-	Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
 }
 
 void UUSprintAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
@@ -68,6 +58,7 @@ void UUSprintAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const 
 		if(character)
 		{
 			character->SetSprint(false);
+			AbilityHelper::RemoveEffect(character, GetCostGameplayEffect()->GetClass());
 		}
 	}
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
