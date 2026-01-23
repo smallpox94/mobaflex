@@ -22,31 +22,31 @@ public:
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(BlueprintReadOnly, Replicated, Category = "Attributes")
 	FGameplayAttributeData Health;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, Health);
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(BlueprintReadOnly, Replicated, Category = "Attributes")
 	FGameplayAttributeData MaxHealth;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, MaxHealth);
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(BlueprintReadOnly, Replicated, Category = "Attributes")
 	FGameplayAttributeData Armor;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, Armor);
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(BlueprintReadOnly, Replicated, Category = "Attributes")
 	FGameplayAttributeData MaxArmor;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, MaxArmor);
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(BlueprintReadOnly, Replicated, Category = "Attributes")
 	FGameplayAttributeData Mana;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, Mana);
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(BlueprintReadOnly, Replicated, Category = "Attributes")
 	FGameplayAttributeData MaxMana;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, MaxMana);
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(BlueprintReadOnly, Replicated, Category = "Attributes")
 	FGameplayAttributeData Stamina;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, Stamina);
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(BlueprintReadOnly, Replicated, Category = "Attributes")
 	FGameplayAttributeData MaxStamina;
 	PLAY_ATTRIBUTE_ACCESSORS(UPlayBaseAttributeSet, MaxStamina);
 

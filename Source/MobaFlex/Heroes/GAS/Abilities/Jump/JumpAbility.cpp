@@ -26,6 +26,7 @@ void UJumpAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, cons
 		}
 		AMobaFlexCharacterBase* character = Cast<AMobaFlexCharacterBase>(ActorInfo->AvatarActor.Get());
 		character->Jump();
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 	}
 }
 

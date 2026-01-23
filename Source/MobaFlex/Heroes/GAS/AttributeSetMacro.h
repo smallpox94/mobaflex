@@ -14,14 +14,14 @@ if(Data.EvaluatedData.Attribute == Get##PropertyName##Attribute()) \
 	{ \
 		return; \
 	} \
-	if(Get##PropertyName() <= 0.0f) \
+	if(Get##PropertyName() <= 0.0f && !Data.Target.HasMatchingGameplayTag(AbilityHelper::FindGameplayTag("MobaFlex.Character.No" #PropertyName ""))) \
 	{ \
 		TargetASC->AddMinimalReplicationGameplayTag(AbilityHelper::FindGameplayTag("MobaFlex.Character.No" #PropertyName ""));	\
 	} \
-	else \
+	else if(Get##PropertyName() > 0.0f && Data.Target.HasMatchingGameplayTag(AbilityHelper::FindGameplayTag("MobaFlex.Character.No" #PropertyName "")))\
 	{ \
-		TargetASC->RemoveMinimalReplicationGameplayTag(AbilityHelper::FindGameplayTag("MobaFlex.Character.No" #PropertyName "")); \
-	} \
+	 	TargetASC->RemoveMinimalReplicationGameplayTag(AbilityHelper::FindGameplayTag("MobaFlex.Character.No" #PropertyName "")); \
+	 } \
 } \
 
 #define BROADCAST_ATTRIBUTE_CHANGED_EVENT(PropertyName) \

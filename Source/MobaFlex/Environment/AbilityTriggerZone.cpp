@@ -35,11 +35,14 @@ void AAbilityTriggerZone::OnOverlapBegin(UPrimitiveComponent* OverlappedComponen
 
 void AAbilityTriggerZone::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	for (TSubclassOf<UGameplayEffect> Effect : EffectsEntering)
+	if (RemoveEnteringEffectsOnExist)
 	{
-		AbilityHelper::RemoveEffect(OtherActor, Effect);
+		for (TSubclassOf<UGameplayEffect> Effect : EffectsEntering)
+		{
+			AbilityHelper::RemoveEffect(OtherActor, Effect);
+		}
 	}
-
+	
 	for (TSubclassOf<UGameplayEffect> Effect : EffectsLeaving)
 	{
 		AbilityHelper::AddEffect(OtherActor, Effect, true);

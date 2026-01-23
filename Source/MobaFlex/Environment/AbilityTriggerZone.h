@@ -40,6 +40,9 @@ public:
 	TArray<TSubclassOf<UGameplayEffect>> EffectsEntering;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	bool RemoveEnteringEffectsOnExist = false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	TArray<TSubclassOf<UGameplayEffect>> EffectsLeaving;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
