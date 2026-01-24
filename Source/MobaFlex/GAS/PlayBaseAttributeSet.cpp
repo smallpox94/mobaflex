@@ -20,6 +20,8 @@ void UPlayBaseAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePro
 	DOREPLIFETIME(UPlayBaseAttributeSet,MaxStamina)
 }
 
+
+
 void UPlayBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
@@ -33,3 +35,10 @@ void UPlayBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCa
 	BROADCAST_ATTRIBUTE_CHANGED_EVENT_WITH_TAG(Stamina)
 	BROADCAST_ATTRIBUTE_CHANGED_EVENT(MaxStamina)
 }
+
+void UPlayBaseAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
+{
+	Super::PreAttributeChange(Attribute, NewValue);
+
+}
+

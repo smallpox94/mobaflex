@@ -28,8 +28,6 @@ AMobaFlexCharacterBase::AMobaFlexCharacterBase()
 
 	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	PlayBaseAttributeSet = CreateDefaultSubobject<UPlayBaseAttributeSet>(TEXT("PlayBaseAttributeSet"));
-
-	
 }
 
 // Called when the game starts or when spawned

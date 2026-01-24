@@ -20,7 +20,7 @@ class MOBAFLEX_API UPlayBaseAttributeSet : public UAttributeSet
 public:
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
-
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	
 	UPROPERTY(BlueprintReadOnly, Replicated, Category = "Attributes")
 	FGameplayAttributeData Health;
