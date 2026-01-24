@@ -2,12 +2,14 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "Abilities/GameplayAbility.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "MobaFlex/Heroes/GAS/PlayBaseAttributeSet.h"
 #include "MobaFlex/UI/LocalHeroWidget.h"
 #include "MobaFlexCharacterBase.generated.h"
+
+class UPlayBaseAttributeSet;
 
 UCLASS()
 class MOBAFLEX_API AMobaFlexCharacterBase : public ACharacter, public IAbilitySystemInterface
@@ -45,6 +47,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	bool bSprint = false;
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -54,6 +58,9 @@ public:
 
 	virtual void BasicAttack();
 	void JumpAbility();
+	void SprintAbility_Start();
+	void SprintAbility_End();
+	void SetSprint(bool sprint);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	TObjectPtr<USpringArmComponent> CameraSpringArm;
@@ -90,4 +97,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<ULocalHeroWidget> PlayerHUDClass;
 	TObjectPtr<ULocalHeroWidget> PlayerHUD;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Abilities")
+	TSubclassOf<UGameplayAbility> JumpAbilityClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Abilities")
+	TSubclassOf<UGameplayAbility> SprintAbilityClass;
+
+	
 };

@@ -30,6 +30,8 @@ void AMobaFlexPlayerController::SetupInputComponent()
 		EnhancedInput->BindAction(this->LookAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::Look);
 		EnhancedInput->BindAction(this->JumpAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::Jump);
 		EnhancedInput->BindAction(this->BasicAttackAction, ETriggerEvent::Triggered, this, &AMobaFlexPlayerController::BasicAttack);
+		EnhancedInput->BindAction(this->SprintAction,  ETriggerEvent::Started, this, &AMobaFlexPlayerController::Sprint_Start);
+		EnhancedInput->BindAction(this->SprintAction,  ETriggerEvent::Completed, this, &AMobaFlexPlayerController::Sprint_End);
 	}
 }
 
@@ -59,6 +61,22 @@ void AMobaFlexPlayerController::Jump(const FInputActionInstance& InputActionInst
 	if (AMobaFlexCharacterBase* mobaCharacter = Cast<AMobaFlexCharacterBase>(GetPawn()))
 	{
 		mobaCharacter->JumpAbility();
+	}
+}
+
+void AMobaFlexPlayerController::Sprint_Start()
+{
+	if (AMobaFlexCharacterBase* mobaCharacter = Cast<AMobaFlexCharacterBase>(GetPawn()))
+	{
+		mobaCharacter->SprintAbility_Start();
+	}
+}
+
+void AMobaFlexPlayerController::Sprint_End()
+{
+	if (AMobaFlexCharacterBase* mobaCharacter = Cast<AMobaFlexCharacterBase>(GetPawn()))
+	{
+		mobaCharacter->SprintAbility_End();
 	}
 }
 

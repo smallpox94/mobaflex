@@ -5,8 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "MobaFlex/Heroes/GAS/AbilityHelper.h"
-#include "MobaFlex/Heroes/GAS/Effects/Jump/JumpAbility.h"
+#include "MobaFlex/GAS/PlayBaseAttributeSet.h"
 
 // Sets default values
 AMobaFlexCharacterBase::AMobaFlexCharacterBase()
@@ -29,6 +28,8 @@ AMobaFlexCharacterBase::AMobaFlexCharacterBase()
 
 	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	PlayBaseAttributeSet = CreateDefaultSubobject<UPlayBaseAttributeSet>(TEXT("PlayBaseAttributeSet"));
+
+	
 }
 
 // Called when the game starts or when spawned
@@ -67,9 +68,9 @@ void AMobaFlexCharacterBase::BeginPlay()
 			PlayBaseAttributeSet->MaxMana.SetCurrentValue(MaxMana);
 			PlayBaseAttributeSet->MaxStamina.SetCurrentValue(MaxStamina);
 			PlayBaseAttributeSet->MaxArmor.SetCurrentValue(MaxArmor);
-			
 			//Giving Jump Ability
-			AbilityHelper::GiveAbility(this, UJumpAbility::StaticClass(), false);
+			AbilityHelper::GiveAbility(this, this->JumpAbilityClass, false);
+			AbilityHelper::GiveAbility(this, this->SprintAbilityClass, false);
 		}
 	}
 	
@@ -108,7 +109,30 @@ void AMobaFlexCharacterBase::BasicAttack()
 
 void AMobaFlexCharacterBase::JumpAbility()
 {
-	AbilityHelper::ActivateAbility(this, UJumpAbility::StaticClass());
+	AbilityHelper::ActivateAbility(this, JumpAbilityClass);
+}
+
+void AMobaFlexCharacterBase::SprintAbility_Start()
+{
+	AbilityHelper::ActivateAbility(this, SprintAbilityClass);	
+}
+
+void AMobaFlexCharacterBase::SprintAbility_End()
+{
+	AbilityHelper::DeactivateAbility(this, SprintAbilityClass);	
+}
+
+void AMobaFlexCharacterBase::SetSprint(bool sprint)
+{
+	bSprint = sprint;
+	if(sprint)
+	{
+		GetCharacterMovement()->MaxWalkSpeed *= 2.0f;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed /= 2.0f;
+	}
 }
 
 UAbilitySystemComponent* AMobaFlexCharacterBase::GetAbilitySystemComponent() const

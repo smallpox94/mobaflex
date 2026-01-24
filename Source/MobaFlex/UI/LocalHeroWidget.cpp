@@ -22,5 +22,4 @@ void ULocalHeroWidget::UpdateArmor(float Armor, float MaxArmor) const
 {
 	ArmorTextBlock->SetText(FText::FromString(FString::FromInt(Armor)));
 	ArmorProgressBar->SetPercent(Armor / MaxArmor);
-	
 }
