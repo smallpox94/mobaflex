@@ -53,7 +53,7 @@ void AMobaFlexPlayerController::Look(const FInputActionInstance& InputActionInst
 	FVector2D InputValue = InputActionInstance.GetValue().Get<FVector2D>();
 	double deltaSec = UGameplayStatics::GetWorldDeltaSeconds(GetWorld());
 	AddYawInput(InputValue.X * deltaSec * TurnRate);
-	AddPitchInput(InputValue.Y * deltaSec * LookUp);
+	AddPitchInput(-InputValue.Y * deltaSec * LookUp);
 }
 
 void AMobaFlexPlayerController::Jump(const FInputActionInstance& InputActionInstance)
