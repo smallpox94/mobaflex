@@ -2,10 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "Abilities/GameplayAbility.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "MobaFlex/Heroes/GAS/PlayBaseAttributeSet.h"
 #include "MobaFlex/UI/LocalHeroWidget.h"
 #include "MobaFlexCharacterBase.generated.h"
 

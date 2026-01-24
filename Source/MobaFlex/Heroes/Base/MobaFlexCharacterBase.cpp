@@ -5,7 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "MobaFlex/Heroes/GAS/AbilityHelper.h"
+#include "MobaFlex/GAS/PlayBaseAttributeSet.h"
 
 // Sets default values
 AMobaFlexCharacterBase::AMobaFlexCharacterBase()

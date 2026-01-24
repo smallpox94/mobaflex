@@ -1,9 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "AbilityTriggerZone.h"
-#include "AbilitySystemInterface.h"
 #include "AbilitySystemComponent.h"
-#include "MobaFlex/Heroes/GAS/AbilityHelper.h"
+#include "MobaFlex/GAS/AbilityHelper.h"
 
 // Sets default values
 AAbilityTriggerZone::AAbilityTriggerZone()
