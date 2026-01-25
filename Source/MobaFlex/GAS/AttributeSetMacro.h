@@ -13,6 +13,11 @@ void ClampAttributeValue(T Attribute, T AttributeToMatch, float& NewValue, float
 ATTRIBUTE_ACCESSORS_BASIC(ClassName, PropertyName) \
 UPROPERTY() \
 FPlayAttributeEvent On##PropertyName##Changed; \
+UFUNCTION() \
+virtual void OnRep_##PropertyName(const FGameplayAttributeData& Old##PropertyName) \
+{ \
+		GAMEPLAYATTRIBUTE_REPNOTIFY(UPlayBaseAttributeSet, PropertyName, Old##PropertyName); \
+} \
 
 #define BROADCAST_ATTRIBUTE_CHANGED_EVENT_WITH_TAG(PropertyName) \
 if(Data.EvaluatedData.Attribute == Get##PropertyName##Attribute()) \

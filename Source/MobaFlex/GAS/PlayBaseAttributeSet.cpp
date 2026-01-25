@@ -10,17 +10,15 @@ void UPlayBaseAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePro
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(UPlayBaseAttributeSet,Health)
-	DOREPLIFETIME(UPlayBaseAttributeSet,Mana)
-	DOREPLIFETIME(UPlayBaseAttributeSet,Armor)
-	DOREPLIFETIME(UPlayBaseAttributeSet,Stamina)	
-	DOREPLIFETIME(UPlayBaseAttributeSet,MaxHealth)
-	DOREPLIFETIME(UPlayBaseAttributeSet,MaxMana)
-	DOREPLIFETIME(UPlayBaseAttributeSet,MaxArmor)
-	DOREPLIFETIME(UPlayBaseAttributeSet,MaxStamina)
+	DOREPLIFETIME_CONDITION_NOTIFY(UPlayBaseAttributeSet,Health, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(UPlayBaseAttributeSet,Mana, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(UPlayBaseAttributeSet,Armor, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(UPlayBaseAttributeSet,Stamina, COND_None, REPNOTIFY_Always)	
+	DOREPLIFETIME_CONDITION_NOTIFY(UPlayBaseAttributeSet,MaxHealth, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(UPlayBaseAttributeSet,MaxMana, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(UPlayBaseAttributeSet,MaxArmor, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(UPlayBaseAttributeSet,MaxStamina, COND_None, REPNOTIFY_Always)
 }
-
-
 
 void UPlayBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {

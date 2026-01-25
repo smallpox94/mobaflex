@@ -2,6 +2,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "MobaFlexPlayerController.h"
+#include "MobaFlexPlayerStateBase.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -98,6 +99,31 @@ void AMobaFlexCharacterBase::Tick(float DeltaTime)
 void AMobaFlexCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+//On Server
+void AMobaFlexCharacterBase::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	
+	AMobaFlexPlayerStateBase* PS = GetPlayerState<AMobaFlexPlayerStateBase>();
+	if(PS)
+	{
+		AbilitySystemComponent = Cast<UAbilitySystemComponent>(PS->GetAbilitySystemComponent());
+		PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, this);
+	}
+}
+
+//On Client
+void AMobaFlexCharacterBase::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	AMobaFlexPlayerStateBase* PS = GetPlayerState<AMobaFlexPlayerStateBase>();
+	if(PS)
+	{
+		AbilitySystemComponent = Cast<UAbilitySystemComponent>(PS->GetAbilitySystemComponent());
+		AbilitySystemComponent->InitAbilityActorInfo(PS, this);
+	}
 }
 
 void AMobaFlexCharacterBase::BasicAttack()
