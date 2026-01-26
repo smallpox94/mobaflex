@@ -15,7 +15,7 @@ void AAbilityTriggerZone::HandleOverlapBegin(AActor* OtherActor, const FHitResul
 {
 	for (TSubclassOf<UGameplayEffect> Effect : EffectsEntering)
 	{
-		AbilityHelper::AddEffect(OtherActor, Effect, true);
+		GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_AddEffect(OtherActor, Effect, true);
 	}
 }
 
@@ -25,12 +25,12 @@ void AAbilityTriggerZone::HandleOverlapEnd(AActor* OtherActor)
 	{
 		for (TSubclassOf<UGameplayEffect> Effect : EffectsEntering)
 		{
-			AbilityHelper::RemoveEffect(OtherActor, Effect);
+			GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_RemoveEffect(OtherActor, Effect);
 		}
 	}
 
 	for (TSubclassOf<UGameplayEffect> Effect : EffectsLeaving)
 	{
-		AbilityHelper::AddEffect(OtherActor, Effect, true);
+		GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_AddEffect(OtherActor, Effect, true);
 	}
 }

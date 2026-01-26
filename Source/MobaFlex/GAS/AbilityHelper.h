@@ -5,16 +5,22 @@
 #include "CoreMinimal.h"
 #include "MobaFlex/Heroes/Base/MobaFlexCharacterBase.h"
 
-// UCLASS()
-class AbilityHelper 
+#include "AbilityHelper.generated.h"
+
+UCLASS()
+class UAbilityHelperSubSystem : public UGameInstanceSubsystem 
 {
+	GENERATED_BODY()
+	
 public:
-	static bool GiveAbility(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass, bool ActivateOnApply);
-	static bool RemoveAbility(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass);
-	static bool ActivateAbility(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass);
-	static bool DeactivateAbility(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass);
-	static bool AddEffect(AActor* actor, TSubclassOf<UGameplayEffect> EffectClass, bool ReplaceIfExist); 
-	static bool RemoveEffect(AActor* actor, TSubclassOf<UGameplayEffect> EffectClass);
-	static bool ClearAllEffects(AActor* actor);
+	bool GiveAbility(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass, bool ActivateOnApply);
+	bool RemoveAbility(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass);
+	bool ActivateAbility(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass);
+	bool DeactivateAbility(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass);
+	UFUNCTION(Server, Reliable)
+	void Server_AddEffect(AActor* actor, TSubclassOf<UGameplayEffect> EffectClass, bool ReplaceIfExist); 
+	UFUNCTION(Server, Reliable)
+	void Server_RemoveEffect(AActor* actor, TSubclassOf<UGameplayEffect> EffectClass);
+	bool ClearAllEffects(AActor* actor);
 	static FGameplayTag FindGameplayTag(FString TagName);
 };

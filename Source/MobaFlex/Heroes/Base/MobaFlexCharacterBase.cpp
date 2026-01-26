@@ -40,16 +40,7 @@ void AMobaFlexCharacterBase::BeginPlay()
 	{
 		AbilitySystemComponent->InitAbilityActorInfo(this, this);
 		if(PlayBaseAttributeSet)
-		{
-			PlayBaseAttributeSet->OnHealthChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnHealthChanged);
-			PlayBaseAttributeSet->OnManaChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnManaChanged);
-			PlayBaseAttributeSet->OnArmorChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnArmorChanged);
-			PlayBaseAttributeSet->OnStaminaChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnStaminaChanged);
-			PlayBaseAttributeSet->OnMaxHealthChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnMaxHealthChanged);
-			PlayBaseAttributeSet->OnMaxManaChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnMaxManaChanged);
-			PlayBaseAttributeSet->OnMaxArmorChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnMaxArmorChanged);
-			PlayBaseAttributeSet->OnMaxStaminaChanged.AddDynamic(this, &AMobaFlexCharacterBase::OnMaxStaminaChanged);
-			
+		{			
 			PlayBaseAttributeSet->Health.SetBaseValue(Health);
 			PlayBaseAttributeSet->Mana.SetBaseValue(Mana);
 			PlayBaseAttributeSet->Stamina.SetBaseValue(Stamina);
@@ -68,8 +59,8 @@ void AMobaFlexCharacterBase::BeginPlay()
 			PlayBaseAttributeSet->MaxStamina.SetCurrentValue(MaxStamina);
 			PlayBaseAttributeSet->MaxArmor.SetCurrentValue(MaxArmor);
 			//Giving Jump Ability
-			AbilityHelper::GiveAbility(this, this->JumpAbilityClass, false);
-			AbilityHelper::GiveAbility(this, this->SprintAbilityClass, false);
+			GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->GiveAbility(this, this->JumpAbilityClass, false);
+			GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->GiveAbility(this, this->SprintAbilityClass, false);
 		}
 	}
 	
@@ -133,17 +124,17 @@ void AMobaFlexCharacterBase::BasicAttack()
 
 void AMobaFlexCharacterBase::JumpAbility()
 {
-	AbilityHelper::ActivateAbility(this, JumpAbilityClass);
+	GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->ActivateAbility(this, JumpAbilityClass);
 }
 
 void AMobaFlexCharacterBase::SprintAbility_Start()
 {
-	AbilityHelper::ActivateAbility(this, SprintAbilityClass);	
+	GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->ActivateAbility(this, SprintAbilityClass);	
 }
 
 void AMobaFlexCharacterBase::SprintAbility_End()
 {
-	AbilityHelper::DeactivateAbility(this, SprintAbilityClass);	
+	GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->DeactivateAbility(this, SprintAbilityClass);	
 }
 
 void AMobaFlexCharacterBase::SetSprint(bool sprint)
@@ -164,41 +155,12 @@ UAbilitySystemComponent* AMobaFlexCharacterBase::GetAbilitySystemComponent() con
 	return AbilitySystemComponent;
 }
 
-
-void AMobaFlexCharacterBase::OnHealthChanged(float EffectMagnitude, float NewValue)
-{
-	PlayBaseAttributeSet->Health.SetCurrentValue(FMath::Clamp(NewValue, 0.0, PlayBaseAttributeSet->MaxHealth.GetCurrentValue()));
-	UpdateHealthUI();
-	if(NewValue <= 0)
-	{
-		Die();
-	}
-}
-
-void AMobaFlexCharacterBase::OnMaxHealthChanged(float EffectMagnitude, float NewValue)
-{
-	PlayBaseAttributeSet->MaxHealth.SetCurrentValue(FMath::Max(NewValue, PlayBaseAttributeSet->Health.GetCurrentValue()));
-	UpdateHealthUI();
-}
-
 void AMobaFlexCharacterBase::UpdateHealthUI()
 {
 	if (PlayerHUD)
 	{
 		PlayerHUD->UpdateHealth(PlayBaseAttributeSet->Health.GetCurrentValue(), PlayBaseAttributeSet->MaxHealth.GetCurrentValue());
 	}
-}
-
-void AMobaFlexCharacterBase::OnManaChanged(float EffectMagnitude, float NewValue)
-{
-	PlayBaseAttributeSet->Mana.SetCurrentValue(FMath::Clamp(NewValue, 0.0, PlayBaseAttributeSet->MaxMana.GetCurrentValue()));
-	UpdateManaUI();
-}
-
-void AMobaFlexCharacterBase::OnMaxManaChanged(float EffectMagnitude, float NewValue)
-{
-	PlayBaseAttributeSet->MaxMana.SetCurrentValue(FMath::Max(NewValue, PlayBaseAttributeSet->Mana.GetCurrentValue()));
-	UpdateManaUI();
 }
 
 void AMobaFlexCharacterBase::UpdateManaUI()
@@ -209,37 +171,12 @@ void AMobaFlexCharacterBase::UpdateManaUI()
 	}
 }
 
-
-void AMobaFlexCharacterBase::OnArmorChanged(float EffectMagnitude, float NewValue)
-{
-	PlayBaseAttributeSet->Armor.SetCurrentValue(FMath::Clamp(NewValue, 0.0, PlayBaseAttributeSet->MaxArmor.GetCurrentValue()));
-	UpdateArmorUI();
-}
-
-void AMobaFlexCharacterBase::OnMaxArmorChanged(float EffectMagnitude, float NewValue)
-{
-	PlayBaseAttributeSet->MaxArmor.SetCurrentValue(FMath::Max(NewValue, PlayBaseAttributeSet->Armor.GetCurrentValue()));
-	UpdateArmorUI();
-}
-
 void AMobaFlexCharacterBase::UpdateArmorUI()
 {
 	if (PlayerHUD)
 	{
 		PlayerHUD->UpdateArmor(PlayBaseAttributeSet->Armor.GetCurrentValue(), PlayBaseAttributeSet->MaxArmor.GetCurrentValue());
 	}
-}
-
-void AMobaFlexCharacterBase::OnStaminaChanged(float EffectMagnitude, float NewValue)
-{
-	PlayBaseAttributeSet->Stamina.SetCurrentValue(FMath::Clamp(NewValue, 0.0, PlayBaseAttributeSet->MaxStamina.GetCurrentValue()));
-	UpdateStaminaUI();
-}
-
-void AMobaFlexCharacterBase::OnMaxStaminaChanged(float EffectMagnitude, float NewValue)
-{
-	PlayBaseAttributeSet->MaxStamina.SetCurrentValue(FMath::Max(NewValue, PlayBaseAttributeSet->Stamina.GetCurrentValue()));
-	UpdateStaminaUI();
 }
 
 void AMobaFlexCharacterBase::UpdateStaminaUI()
@@ -250,9 +187,9 @@ void AMobaFlexCharacterBase::UpdateStaminaUI()
 	}
 }
 
-void AMobaFlexCharacterBase::Die()
+void AMobaFlexCharacterBase::Client_Die_Implementation()
 {
-	// Only runs on Server
+	Dead = true;
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetCharacterMovement()->GravityScale = 0;
 	GetCharacterMovement()->Velocity = FVector(0);
@@ -260,11 +197,14 @@ void AMobaFlexCharacterBase::Die()
 	if (AbilitySystemComponent)
 	{
 		AbilitySystemComponent->CancelAllAbilities();
-		AbilityHelper::ClearAllEffects(this);
+		GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->ClearAllEffects(this);
 	}
 
 	AMobaFlexPlayerController* PC = Cast<AMobaFlexPlayerController>(GetController());
-	PC->DisableInput(PC);
+	if (PC)
+	{
+		PC->DisableInput(PC);
+	}
 	
 	if (DeathAnimation)
 	{

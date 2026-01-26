@@ -47,12 +47,12 @@ void APickupZone::OnPickedUp_Implementation(AActor* PickupActor)
 {
 	for (TSubclassOf<UGameplayEffect>& Effect : EffectsOnPickup)
 	{
-		AbilityHelper::AddEffect(PickupActor, Effect, true);
+		GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_AddEffect(PickupActor, Effect, true);
 	}
 	
 	for (TSubclassOf<UGameplayAbility>& ability : AbilitiesOnPickup)
 	{
-		AbilityHelper::GiveAbility(PickupActor, ability, false);
+		GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->GiveAbility(PickupActor, ability, false);
 	}
 }
 

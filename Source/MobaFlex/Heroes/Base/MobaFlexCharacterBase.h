@@ -22,28 +22,6 @@ public:
 	AMobaFlexCharacterBase();
 
 protected:
-	UFUNCTION()
-	virtual void OnHealthChanged(float EffectMagnitude, float NewValue);
-	UFUNCTION()
-	virtual void OnManaChanged(float EffectMagnitude, float NewValue);
-	UFUNCTION()
-	virtual void OnArmorChanged(float EffectMagnitude, float NewValue);
-	UFUNCTION()
-	void OnStaminaChanged(float EffectMagnitude, float NewValue);
-	void Die();
-
-	UFUNCTION()
-	void OnMaxHealthChanged(float EffectMagnitude, float NewValue);
-	void UpdateManaUI();
-	void UpdateArmorUI();
-	void UpdateStaminaUI();
-	UFUNCTION()
-	void OnMaxManaChanged(float EffectMagnitude, float NewValue);
-	UFUNCTION()
-	void OnMaxArmorChanged(float EffectMagnitude, float NewValue);
-	UFUNCTION()
-	void OnMaxStaminaChanged(float EffectMagnitude, float NewValue);
-	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -74,7 +52,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	
 	void UpdateHealthUI();
+	void UpdateManaUI();
+	void UpdateArmorUI();
+	void UpdateStaminaUI();
+	UFUNCTION(Reliable, NetMulticast)
+	void Client_Die();
+	UPROPERTY(Transient)
+	bool Dead = false;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	TObjectPtr<UPlayBaseAttributeSet> PlayBaseAttributeSet;
 

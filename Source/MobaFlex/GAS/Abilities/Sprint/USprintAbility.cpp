@@ -57,7 +57,7 @@ void UUSprintAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const 
 		if(character)
 		{
 			character->SetSprint(false);
-			AbilityHelper::RemoveEffect(character, GetCostGameplayEffect()->GetClass());
+			GetWorld()->GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_RemoveEffect(character, GetCostGameplayEffect()->GetClass());
 		}
 	}
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
