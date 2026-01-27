@@ -29,6 +29,13 @@ AMobaFlexCharacterBase::AMobaFlexCharacterBase()
 
 	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	PlayBaseAttributeSet = CreateDefaultSubobject<UPlayBaseAttributeSet>(TEXT("PlayBaseAttributeSet"));
+    
+    // Create overhead widget component
+    OverheadWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"));
+    OverheadWidgetComponent->SetupAttachment(GetRootComponent());
+    OverheadWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+    OverheadWidgetComponent->SetDrawSize(FVector2D(200.0f, 40.0f));
+    OverheadWidgetComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 120.0f));
 }
 
 // Called when the game starts or when spawned
@@ -78,6 +85,21 @@ void AMobaFlexCharacterBase::BeginPlay()
 			UpdateStaminaUI();
 		}
 	}
+
+    // Configure overhead widget component
+    if (OverheadWidgetComponent && OverheadWidgetClass)
+    {
+        OverheadWidgetComponent->SetWidgetClass(OverheadWidgetClass);
+        // If this is locally controlled player, hide overhead (don't show own overhead)
+        if (IsLocallyControlled())
+        {
+            OverheadWidgetComponent->SetVisibility(false);
+        }
+    	else
+    	{
+	    	UpdateHealthUI();
+    	}
+    }
 }
 
 // Called every frame
@@ -161,6 +183,15 @@ void AMobaFlexCharacterBase::UpdateHealthUI()
 	{
 		PlayerHUD->UpdateHealth(PlayBaseAttributeSet->Health.GetCurrentValue(), PlayBaseAttributeSet->MaxHealth.GetCurrentValue());
 	}
+
+    if (OverheadWidgetComponent)
+    {
+        UOverheadWidget* OW = Cast<UOverheadWidget>(OverheadWidgetComponent->GetUserWidgetObject());
+        if (OW)
+        {
+            OW->UpdateHealth(PlayBaseAttributeSet->Health.GetCurrentValue(), PlayBaseAttributeSet->MaxHealth.GetCurrentValue());
+        }
+    }
 }
 
 void AMobaFlexCharacterBase::UpdateManaUI()
