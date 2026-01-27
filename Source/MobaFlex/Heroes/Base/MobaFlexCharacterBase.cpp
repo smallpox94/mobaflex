@@ -59,8 +59,8 @@ void AMobaFlexCharacterBase::BeginPlay()
 			PlayBaseAttributeSet->MaxStamina.SetCurrentValue(MaxStamina);
 			PlayBaseAttributeSet->MaxArmor.SetCurrentValue(MaxArmor);
 			//Giving Jump Ability
-			GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->GiveAbility(this, this->JumpAbilityClass, false);
-			GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->GiveAbility(this, this->SprintAbilityClass, false);
+			GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_GiveAbility(this, this->JumpAbilityClass, false);
+			GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_GiveAbility(this, this->SprintAbilityClass, false);
 		}
 	}
 	
@@ -124,17 +124,17 @@ void AMobaFlexCharacterBase::BasicAttack()
 
 void AMobaFlexCharacterBase::JumpAbility()
 {
-	GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->ActivateAbility(this, JumpAbilityClass);
+	GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_ActivateAbility(this, JumpAbilityClass);
 }
 
 void AMobaFlexCharacterBase::SprintAbility_Start()
 {
-	GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->ActivateAbility(this, SprintAbilityClass);	
+	GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_ActivateAbility(this, SprintAbilityClass);	
 }
 
 void AMobaFlexCharacterBase::SprintAbility_End()
 {
-	GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->DeactivateAbility(this, SprintAbilityClass);	
+	GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_DeactivateAbility(this, SprintAbilityClass);	
 }
 
 void AMobaFlexCharacterBase::SetSprint(bool sprint)
@@ -197,7 +197,7 @@ void AMobaFlexCharacterBase::Client_Die_Implementation()
 	if (AbilitySystemComponent)
 	{
 		AbilitySystemComponent->CancelAllAbilities();
-		GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->ClearAllEffects(this);
+		GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_ClearAllEffects(this);
 	}
 
 	AMobaFlexPlayerController* PC = Cast<AMobaFlexPlayerController>(GetController());

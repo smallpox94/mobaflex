@@ -7,7 +7,7 @@
 #include "GameplayEffect.h"
 
 
-bool UAbilityHelperSubSystem::GiveAbility(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass, bool ActivateOnApply)
+void UAbilityHelperSubSystem::Server_GiveAbility_Implementation(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass, bool ActivateOnApply)
 {
 	if(AbilityClass)
 	{
@@ -21,16 +21,15 @@ bool UAbilityHelperSubSystem::GiveAbility(AActor* actor, TSubclassOf<UGameplayAb
 					FGameplayAbilitySpecHandle specHandle = AbilitySystemComponent->GiveAbility(AbilitySpec);
 					if (ActivateOnApply)
 					{
-						return AbilitySystemComponent->TryActivateAbilityByClass(AbilityClass);
+						AbilitySystemComponent->TryActivateAbilityByClass(AbilityClass);
 					}
-					return true;
+					return;
 				}
 			}
 		}
 	}
-	return false;
 }
-bool UAbilityHelperSubSystem::RemoveAbility(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass)
+void UAbilityHelperSubSystem::Server_RemoveAbility_Implementation(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass)
 {
 	if(AbilityClass)
 	{
@@ -44,16 +43,14 @@ bool UAbilityHelperSubSystem::RemoveAbility(AActor* actor, TSubclassOf<UGameplay
 					if (Spec && Spec->IsActive())
 					{
 						AbilitySystemComponent->ClearAbility(Spec->Handle);
-						return true;
 					}
 				}
 			}
 		}
 	}
-	return false;
 }
 
-bool UAbilityHelperSubSystem::ActivateAbility(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass)
+void UAbilityHelperSubSystem::Server_ActivateAbility_Implementation(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass)
 {
 	if (AbilityClass)
 	{
@@ -63,15 +60,14 @@ bool UAbilityHelperSubSystem::ActivateAbility(AActor* actor, TSubclassOf<UGamepl
 			{
 				if (UAbilitySystemComponent* AbilitySystemComponent = AbilitySystemInterface->GetAbilitySystemComponent())
 				{
-					return AbilitySystemComponent->TryActivateAbilityByClass(AbilityClass);
+					AbilitySystemComponent->TryActivateAbilityByClass(AbilityClass);
 				}
 			}
 		}
 	}
-	return false;
 }
 
-bool UAbilityHelperSubSystem::DeactivateAbility(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass)
+void UAbilityHelperSubSystem::Server_DeactivateAbility_Implementation(AActor* actor, TSubclassOf<UGameplayAbility> AbilityClass)
 {
  	if (AbilityClass)
 	{
@@ -85,13 +81,11 @@ bool UAbilityHelperSubSystem::DeactivateAbility(AActor* actor, TSubclassOf<UGame
  					if (Spec && Spec->IsActive())
  					{
  						AbilitySystemComponent->CancelAbilityHandle(Spec->Handle);
- 						return true;
  					}
  				}
  			}
  		}
 	}
-	return false;
 }
 
 void UAbilityHelperSubSystem::Server_AddEffect_Implementation(AActor* actor, TSubclassOf<UGameplayEffect> EffectClass, bool ReplaceIfExist)
@@ -145,7 +139,7 @@ void UAbilityHelperSubSystem::Server_RemoveEffect_Implementation(AActor* actor, 
 	}
 }
 
-bool UAbilityHelperSubSystem::ClearAllEffects(AActor* actor)
+void UAbilityHelperSubSystem::Server_ClearAllEffects_Implementation(AActor* actor)
 {
 	if(actor)
 	{
@@ -156,12 +150,11 @@ bool UAbilityHelperSubSystem::ClearAllEffects(AActor* actor)
 				if (UAbilitySystemComponent* AbilitySystemComponent = AbilitySystemInterface->GetAbilitySystemComponent())
 				{
 					FGameplayEffectQuery Query;
-					return AbilitySystemComponent->RemoveActiveEffects(Query) > 0;
+					AbilitySystemComponent->RemoveActiveEffects(Query);
 				}
 			}
 		}
 	}
-	return false;
 }
 
 FGameplayTag UAbilityHelperSubSystem::FindGameplayTag(FString TagName)
