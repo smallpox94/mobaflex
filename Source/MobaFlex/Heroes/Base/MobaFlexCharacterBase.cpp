@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "MobaFlex/GAS/PlayBaseAttributeSet.h"
+#include "View/MVVMView.h"
 
 // Sets default values
 AMobaFlexCharacterBase::AMobaFlexCharacterBase()
@@ -74,15 +75,19 @@ void AMobaFlexCharacterBase::BeginPlay()
 	if (PlayerHUDClass)
 	{
 		APlayerController* PC = Cast<APlayerController>(GetController());
-		PlayerHUD = CreateWidget<ULocalHeroWidget>(PC, PlayerHUDClass);
-		if (PlayerHUD)
+		if (UUserWidget* PlayerHUD = CreateWidget<UUserWidget>(PC, PlayerHUDClass))
 		{
+			//Create View Models
+			LocalPlayerHUDViewModel = NewObject<ULocalPlayerMVVM>();
+			UpdateHealthVM();
+			UpdateManaVM();
+			UpdateArmorVM();
+			UpdateStaminaVM();
+			if (UMVVMView* View = Cast<UMVVMView>(PlayerHUD->GetExtension(UMVVMView::StaticClass())))
+			{
+				bool result = View->SetViewModel(FName("LocalPlayerMVVM"), LocalPlayerHUDViewModel);
+			}
 			PlayerHUD->AddToViewport();
-			
-			UpdateHealthUI();
-			UpdateManaUI();
-			UpdateArmorUI();
-			UpdateStaminaUI();
 		}
 	}
 
@@ -97,7 +102,7 @@ void AMobaFlexCharacterBase::BeginPlay()
         }
     	else
     	{
-	    	UpdateHealthUI();
+	    	UpdateHealthVM();
     	}
     }
 }
@@ -177,11 +182,12 @@ UAbilitySystemComponent* AMobaFlexCharacterBase::GetAbilitySystemComponent() con
 	return AbilitySystemComponent;
 }
 
-void AMobaFlexCharacterBase::UpdateHealthUI()
+void AMobaFlexCharacterBase::UpdateHealthVM()
 {
-	if (PlayerHUD)
+	if (LocalPlayerHUDViewModel)
 	{
-		PlayerHUD->UpdateHealth(PlayBaseAttributeSet->Health.GetCurrentValue(), PlayBaseAttributeSet->MaxHealth.GetCurrentValue());
+		LocalPlayerHUDViewModel->SetHealth(PlayBaseAttributeSet->Health.GetCurrentValue());
+		LocalPlayerHUDViewModel->SetMaxHealth(PlayBaseAttributeSet->MaxHealth.GetCurrentValue());
 	}
 
     if (OverheadWidgetComponent)
@@ -194,27 +200,30 @@ void AMobaFlexCharacterBase::UpdateHealthUI()
     }
 }
 
-void AMobaFlexCharacterBase::UpdateManaUI()
+void AMobaFlexCharacterBase::UpdateManaVM()
 {
-	if (PlayerHUD)
+	if (LocalPlayerHUDViewModel)
 	{
-		PlayerHUD->UpdateMana(PlayBaseAttributeSet->Mana.GetCurrentValue(), PlayBaseAttributeSet->MaxMana.GetCurrentValue());
+		LocalPlayerHUDViewModel->SetMana(PlayBaseAttributeSet->Mana.GetCurrentValue());
+		LocalPlayerHUDViewModel->SetMaxMana(PlayBaseAttributeSet->MaxMana.GetCurrentValue());
 	}
 }
 
-void AMobaFlexCharacterBase::UpdateArmorUI()
+void AMobaFlexCharacterBase::UpdateArmorVM()
 {
-	if (PlayerHUD)
+	if (LocalPlayerHUDViewModel)
 	{
-		PlayerHUD->UpdateArmor(PlayBaseAttributeSet->Armor.GetCurrentValue(), PlayBaseAttributeSet->MaxArmor.GetCurrentValue());
+		LocalPlayerHUDViewModel->SetArmor(PlayBaseAttributeSet->Armor.GetCurrentValue());
+		LocalPlayerHUDViewModel->SetMaxArmor(PlayBaseAttributeSet->MaxArmor.GetCurrentValue());
 	}
 }
 
-void AMobaFlexCharacterBase::UpdateStaminaUI()
+void AMobaFlexCharacterBase::UpdateStaminaVM()
 {
-	if (PlayerHUD)
+	if (LocalPlayerHUDViewModel)
 	{
-		PlayerHUD->UpdateStamina(PlayBaseAttributeSet->Stamina.GetCurrentValue(), PlayBaseAttributeSet->MaxStamina.GetCurrentValue());
+		LocalPlayerHUDViewModel->SetStamina(PlayBaseAttributeSet->Stamina.GetCurrentValue());
+		LocalPlayerHUDViewModel->SetMaxStamina(PlayBaseAttributeSet->MaxStamina.GetCurrentValue());
 	}
 }
 

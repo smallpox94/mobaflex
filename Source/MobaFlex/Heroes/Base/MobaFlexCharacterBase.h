@@ -6,8 +6,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "MobaFlex/UI/LocalHeroWidget.h"
 #include "Components/WidgetComponent.h"
+#include "MobaFlex/UI/LocalPlayerMVVM.h"
 #include "MobaFlex/UI/OverheadWidget.h"
 #include "MobaFlexCharacterBase.generated.h"
 
@@ -54,10 +54,10 @@ public:
     TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
     UAbilitySystemComponent* GetAbilitySystemComponent() const override;
     
-    void UpdateHealthUI();
-    void UpdateManaUI();
-    void UpdateArmorUI();
-    void UpdateStaminaUI();
+    void UpdateHealthVM();
+    void UpdateManaVM();
+    void UpdateArmorVM();
+    void UpdateStaminaVM();
     UFUNCTION(NetMulticast, Reliable)
     void Client_Die();
     UPROPERTY(Transient)
@@ -81,11 +81,11 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attribute Values")
     float MaxStamina = 100.0f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attribute Values")
-    float MaxArmor = 0.0f;
+    float MaxArmor = 100.0f;
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
-    TSubclassOf<ULocalHeroWidget> PlayerHUDClass;
-    TObjectPtr<ULocalHeroWidget> PlayerHUD;
+    TSubclassOf<UUserWidget> PlayerHUDClass;
+    TObjectPtr<ULocalPlayerMVVM> LocalPlayerHUDViewModel;
 
     // Overhead widget shown above characters (for other players/enemies)
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")

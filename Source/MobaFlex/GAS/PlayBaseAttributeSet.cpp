@@ -54,13 +54,13 @@ void UPlayBaseAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribu
 void UPlayBaseAttributeSet::OnRep_Health()
 {
 	AMobaFlexCharacterBase* character = Cast<AMobaFlexCharacterBase>(GetOwningActor());
-	character->UpdateHealthUI();
+	character->UpdateHealthVM();
 }
 
 void UPlayBaseAttributeSet::OnRep_MaxHealth()
 {
 	AMobaFlexCharacterBase* character = Cast<AMobaFlexCharacterBase>(GetOwningActor());
-	character->UpdateHealthUI();
+	character->UpdateHealthVM();
 }
 
 void UPlayBaseAttributeSet::OnRep_Armor()
@@ -87,13 +87,13 @@ void UPlayBaseAttributeSet::OnRep_MaxMana()
 void UPlayBaseAttributeSet::OnRep_Stamina()
 {
 	AMobaFlexCharacterBase* character = Cast<AMobaFlexCharacterBase>(GetOwningActor());
-	character->UpdateStaminaUI();
+	character->UpdateStaminaVM();
 }
 
 void UPlayBaseAttributeSet::OnRep_MaxStamina()
 {
 	AMobaFlexCharacterBase* character = Cast<AMobaFlexCharacterBase>(GetOwningActor());
-	character->UpdateStaminaUI();
+	character->UpdateStaminaVM();
 
 }
 
