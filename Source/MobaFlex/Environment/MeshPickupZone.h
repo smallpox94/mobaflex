@@ -20,6 +20,12 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	FRotator ComputeRotation(float DeltaTime);
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PickupZone")
+	TSoftObjectPtr<UStaticMesh> StaticMesh;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PickupZone")
+	TObjectPtr<UStaticMeshComponent> StaticMeshComponent;
 };

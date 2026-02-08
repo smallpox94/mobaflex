@@ -49,7 +49,7 @@ public:
     TObjectPtr<UCameraComponent> CameraInputComponent;
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
-    TObjectPtr<UAnimSequenceBase> DeathAnimation;
+    TSoftObjectPtr<UAnimSequenceBase> DeathAnimation;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
     TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
     UAbilitySystemComponent* GetAbilitySystemComponent() const override;
@@ -84,18 +84,18 @@ public:
     float MaxArmor = 100.0f;
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
-    TSubclassOf<UUserWidget> PlayerHUDClass;
+    TSoftClassPtr<UUserWidget> PlayerHUDClass;
     TObjectPtr<ULocalPlayerMVVM> LocalPlayerHUDViewModel;
 
     // Overhead widget shown above characters (for other players/enemies)
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
     TObjectPtr<UWidgetComponent> OverheadWidgetComponent;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
-    TSubclassOf<UOverheadWidget> OverheadWidgetClass;
+    TSoftClassPtr<UOverheadWidget> OverheadWidgetClass;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Abilities")
-    TSubclassOf<UGameplayAbility> JumpAbilityClass;
+    TSoftClassPtr<UGameplayAbility> JumpAbilityClass;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Abilities")
-    TSubclassOf<UGameplayAbility> SprintAbilityClass;
+    TSoftClassPtr<UGameplayAbility> SprintAbilityClass;
 
 };

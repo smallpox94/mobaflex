@@ -4,6 +4,8 @@
 #include "MobaFlexPlayerController.h"
 #include "MobaFlexPlayerStateBase.h"
 #include "Components/CapsuleComponent.h"
+#include "Engine/AssetManager.h"
+#include "Engine/StreamableManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "MobaFlex/GAS/PlayBaseAttributeSet.h"
@@ -67,15 +69,15 @@ void AMobaFlexCharacterBase::BeginPlay()
 			PlayBaseAttributeSet->MaxStamina.SetCurrentValue(MaxStamina);
 			PlayBaseAttributeSet->MaxArmor.SetCurrentValue(MaxArmor);
 			//Giving Jump Ability
-			GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_GiveAbility(this, this->JumpAbilityClass, false);
-			GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_GiveAbility(this, this->SprintAbilityClass, false);
+			GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_GiveAbility(this, this->JumpAbilityClass.LoadSynchronous(), false);
+			GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_GiveAbility(this, this->SprintAbilityClass.LoadSynchronous(), false);
 		}
 	}
 	
 	if (PlayerHUDClass)
 	{
 		APlayerController* PC = Cast<APlayerController>(GetController());
-		if (UUserWidget* PlayerHUD = CreateWidget<UUserWidget>(PC, PlayerHUDClass))
+		if (UUserWidget* PlayerHUD = CreateWidget<UUserWidget>(PC, PlayerHUDClass.LoadSynchronous()))
 		{
 			//Create View Models
 			LocalPlayerHUDViewModel = NewObject<ULocalPlayerMVVM>();
@@ -94,7 +96,6 @@ void AMobaFlexCharacterBase::BeginPlay()
     // Configure overhead widget component
     if (OverheadWidgetComponent && OverheadWidgetClass)
     {
-        OverheadWidgetComponent->SetWidgetClass(OverheadWidgetClass);
         // If this is locally controlled player, hide overhead (don't show own overhead)
         if (IsLocallyControlled())
         {
@@ -102,6 +103,7 @@ void AMobaFlexCharacterBase::BeginPlay()
         }
     	else
     	{
+    		OverheadWidgetComponent->SetWidgetClass(OverheadWidgetClass.LoadSynchronous());
 	    	UpdateHealthVM();
     	}
     }
@@ -151,17 +153,17 @@ void AMobaFlexCharacterBase::BasicAttack()
 
 void AMobaFlexCharacterBase::JumpAbility()
 {
-	GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_ActivateAbility(this, JumpAbilityClass);
+	GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_ActivateAbility(this, JumpAbilityClass.LoadSynchronous());
 }
 
 void AMobaFlexCharacterBase::SprintAbility_Start()
 {
-	GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_ActivateAbility(this, SprintAbilityClass);	
+GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_ActivateAbility(this, SprintAbilityClass.LoadSynchronous());	
 }
 
 void AMobaFlexCharacterBase::SprintAbility_End()
 {
-	GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_DeactivateAbility(this, SprintAbilityClass);	
+	GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_DeactivateAbility(this, SprintAbilityClass.LoadSynchronous());	
 }
 
 void AMobaFlexCharacterBase::SetSprint(bool sprint)
@@ -246,12 +248,30 @@ void AMobaFlexCharacterBase::Client_Die_Implementation()
 		PC->DisableInput(PC);
 	}
 	
-	if (DeathAnimation)
+	if (!DeathAnimation.IsNull())
 	{
-		GetMesh()->PlayAnimation(DeathAnimation, false);
+		// FStreamableManager& SM = UAssetManager::GetStreamableManager();
+		// TRACE_BOOKMARK(TEXT("Request Death Animation"));
+		// SM.RequestAsyncLoad(DeathAnimation.ToSoftObjectPath(),  FStreamableDelegate::CreateLambda([this]()
+		// {
+		// 	TRACE_BOOKMARK(TEXT("Death Animation Loaded"));
+		// 	GetMesh()->PlayAnimation(DeathAnimation.Get(), false);
+		// 	TRACE_BOOKMARK(TEXT("Death Animation Launched"));
+		// }));
+		SCOPED_NAMED_EVENT_TEXT("Request Async Death Animation Load", FColor::Green);
+		DeathAnimation.LoadAsync(FLoadSoftObjectPathAsyncDelegate::CreateLambda([this](const FSoftObjectPath& InSoftObjectPath, UObject* InObject)
+		{
+			TRACE_BOOKMARK(TEXT("Death Animation Loaded"));
+			GetMesh()->PlayAnimation(DeathAnimation.Get(), false);
+			TRACE_BOOKMARK(TEXT("Death Animation Launched"));
+		}));
+		
+		//TRACE_BOOKMARK(TEXT("Request Death Animation"));
+		//GetMesh()->PlayAnimation(DeathAnimation.LoadSynchronous(), false);
+		//TRACE_BOOKMARK(TEXT("Death Animation Launched"));
 	}
 	else
-	{
+	{		
 		Destroy();
 	}
 }

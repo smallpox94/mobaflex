@@ -3,12 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CascadeParticleSystemComponent.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+#include "ObjectPooling/IActorPooled.h"
 #include "GunProjectile.generated.h"
 
 UCLASS()
-class MOBAFLEX_API AGunProjectile : public AActor
+class MOBAFLEX_API AGunProjectile : public AActor, public IActorPooled
 {
+public:
+	virtual void ActorPool_OnActivate_Implementation(FTransform Transform, AActor* OwnerActor  = nullptr, APawn* instigator = nullptr ) override;
+	virtual void ActorPool_OnDeactivate_Implementation() override;
+private:
 	GENERATED_BODY()
 
 public:
@@ -22,4 +29,10 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UCascadeParticleSystemComponent> FXComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 };
