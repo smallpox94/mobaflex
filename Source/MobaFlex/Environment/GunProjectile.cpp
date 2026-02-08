@@ -48,24 +48,34 @@ void AGunProjectile::ActorPool_OnActivate_Implementation(FTransform Transform, A
 	SetActorTransform(Transform);
 	SetInstigator(instigator);
 	SetOwner(OwnerActor);
-	SetActorEnableCollision(true);
+	SetActorEnableCollision(false);
 	SetActorHiddenInGame(false);
-	if (!ProjectileMovementComponent->HasBeenInitialized())
+	if (ProjectileMovementComponent)
 	{
-		ProjectileMovementComponent->InitializeComponent();
+		// Critical: Re-link the component to the root
+		ProjectileMovementComponent->SetUpdatedComponent(RootComponent);
+        
+		// Reset velocity
+		FVector dir = Transform.Rotator().Vector();
+		dir.Normalize();
+		ProjectileMovementComponent->Velocity = dir  * ProjectileMovementComponent->InitialSpeed * 0.1f;
+        
+		// Reactivate the component
+		ProjectileMovementComponent->Activate();
 	}
-	ProjectileMovementComponent->Activate();
-	DispatchBeginPlay();
 }
 
 void AGunProjectile::ActorPool_OnDeactivate_Implementation()
 {
 	SetActorEnableCollision(false);
 	SetActorHiddenInGame(true);
-	if (ProjectileMovementComponent->HasBeenInitialized())
-    {
-		ProjectileMovementComponent->UninitializeComponent();
-    }
-	ProjectileMovementComponent->Deactivate();
-	RouteEndPlay(EEndPlayReason::Destroyed);
+	SetActorHiddenInGame(true);
+	SetActorEnableCollision(false);
+    
+	if (ProjectileMovementComponent)
+	{
+		ProjectileMovementComponent->StopMovementImmediately();
+		ProjectileMovementComponent->SetUpdatedComponent(nullptr);
+		ProjectileMovementComponent->Deactivate();
+	}
 }
