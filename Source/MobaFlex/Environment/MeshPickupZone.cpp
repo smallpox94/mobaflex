@@ -47,7 +47,7 @@ void AMeshPickupZone::Tick(float DeltaTime)
 	else if (GMobaFlexRotateOptimization == 1)
 	{
 		UE::Tasks::TTask<FRotator> task1 = UE::Tasks::Launch(UE_SOURCE_LOCATION, [this, DeltaTime] { return ComputeRotation(DeltaTime); });
-		UE::Tasks::Launch(UE_SOURCE_LOCATION, [this, task1] mutable
+		UE::Tasks::Launch(UE_SOURCE_LOCATION, [this, task1] () mutable
 		{
 			FRotator resultT1 = task1.GetResult();
 			AsyncTask(ENamedThreads::GameThread, [this, resultT1]()

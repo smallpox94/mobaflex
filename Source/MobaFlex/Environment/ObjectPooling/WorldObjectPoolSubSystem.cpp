@@ -38,7 +38,7 @@ AActor* UWorldObjectPoolSubSystem::AcquireActorFromPool(TSubclassOf<AActor> Acto
 	SCOPED_NAMED_EVENT_TEXT("WorldObjectPool::Acquire", FColor::Green)
 	FActorPool& existingPool = ObjectPools.FindOrAdd(ActorClass);
 	AActor* pooledActor;
-	if (existingPool.Actors.IsEmpty())
+	if (existingPool.Actors.IsEmpty() || existingPool.Actors[0] == nullptr)
 	{
 		pooledActor = GetWorld()->SpawnActor<AActor>(ActorClass);
 	}

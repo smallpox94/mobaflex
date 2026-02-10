@@ -45,24 +45,22 @@ void AGunProjectile::Tick(float DeltaTime)
 
 void AGunProjectile::ActorPool_OnActivate_Implementation(FTransform Transform, AActor* OwnerActor /* = nullptr */, APawn* instigator /* = nullptr */)
 {
+	if (ProjectileMovementComponent)
+	{
+		ProjectileMovementComponent->SetUpdatedComponent(RootComponent);
+		
+		FVector dir = Transform.Rotator().Vector();
+		dir.Normalize();
+		ProjectileMovementComponent->Velocity = dir  * ProjectileMovementComponent->InitialSpeed;
+        
+		// Reactivate the component
+		ProjectileMovementComponent->Activate();
+	}
 	SetActorTransform(Transform);
 	SetInstigator(instigator);
 	SetOwner(OwnerActor);
 	SetActorEnableCollision(false);
 	SetActorHiddenInGame(false);
-	if (ProjectileMovementComponent)
-	{
-		// Critical: Re-link the component to the root
-		ProjectileMovementComponent->SetUpdatedComponent(RootComponent);
-        
-		// Reset velocity
-		FVector dir = Transform.Rotator().Vector();
-		dir.Normalize();
-		ProjectileMovementComponent->Velocity = dir  * ProjectileMovementComponent->InitialSpeed * 0.1f;
-        
-		// Reactivate the component
-		ProjectileMovementComponent->Activate();
-	}
 }
 
 void AGunProjectile::ActorPool_OnDeactivate_Implementation()
