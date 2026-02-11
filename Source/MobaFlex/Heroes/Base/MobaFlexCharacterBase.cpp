@@ -187,7 +187,13 @@ UAbilitySystemComponent* AMobaFlexCharacterBase::GetAbilitySystemComponent() con
 
 void AMobaFlexCharacterBase::UpdateHealthVM()
 {
-	if (LocalPlayerHUDViewModel && IsLocallyControlled())
+	if (LocalPlayerHUDViewModel)
+	{
+		LocalPlayerHUDViewModel->SetHealth(PlayBaseAttributeSet->Health.GetCurrentValue());
+		LocalPlayerHUDViewModel->SetMaxHealth(PlayBaseAttributeSet->MaxHealth.GetCurrentValue());
+	}
+	ENetMode NetMode = GetNetMode();
+	if (NetMode == NM_Standalone || IsLocallyControlled())
 	{
 		LocalPlayerHUDViewModel->SetHealth(PlayBaseAttributeSet->Health.GetCurrentValue());
 		LocalPlayerHUDViewModel->SetMaxHealth(PlayBaseAttributeSet->MaxHealth.GetCurrentValue());
@@ -207,8 +213,12 @@ void AMobaFlexCharacterBase::UpdateManaVM()
 {
 	if (LocalPlayerHUDViewModel)
 	{
-		LocalPlayerHUDViewModel->SetMana(PlayBaseAttributeSet->Mana.GetCurrentValue());
-		LocalPlayerHUDViewModel->SetMaxMana(PlayBaseAttributeSet->MaxMana.GetCurrentValue());
+		ENetMode NetMode = GetNetMode();
+		if (NetMode == NM_Standalone || IsLocallyControlled())
+		{
+			LocalPlayerHUDViewModel->SetMana(PlayBaseAttributeSet->Mana.GetCurrentValue());
+			LocalPlayerHUDViewModel->SetMaxMana(PlayBaseAttributeSet->MaxMana.GetCurrentValue());
+		}
 	}
 }
 
@@ -216,8 +226,12 @@ void AMobaFlexCharacterBase::UpdateArmorVM()
 {
 	if (LocalPlayerHUDViewModel)
 	{
-		LocalPlayerHUDViewModel->SetArmor(PlayBaseAttributeSet->Armor.GetCurrentValue());
-		LocalPlayerHUDViewModel->SetMaxArmor(PlayBaseAttributeSet->MaxArmor.GetCurrentValue());
+		ENetMode NetMode = GetNetMode();
+		if (NetMode == NM_Standalone || IsLocallyControlled())
+		{
+			LocalPlayerHUDViewModel->SetArmor(PlayBaseAttributeSet->Armor.GetCurrentValue());
+			LocalPlayerHUDViewModel->SetMaxArmor(PlayBaseAttributeSet->MaxArmor.GetCurrentValue());
+		}
 	}
 }
 
@@ -225,8 +239,12 @@ void AMobaFlexCharacterBase::UpdateStaminaVM()
 {
 	if (LocalPlayerHUDViewModel)
 	{
-		LocalPlayerHUDViewModel->SetStamina(PlayBaseAttributeSet->Stamina.GetCurrentValue());
-		LocalPlayerHUDViewModel->SetMaxStamina(PlayBaseAttributeSet->MaxStamina.GetCurrentValue());
+		ENetMode NetMode = GetNetMode();
+		if (NetMode == NM_Standalone || IsLocallyControlled())
+		{
+			LocalPlayerHUDViewModel->SetStamina(PlayBaseAttributeSet->Stamina.GetCurrentValue());
+			LocalPlayerHUDViewModel->SetMaxStamina(PlayBaseAttributeSet->MaxStamina.GetCurrentValue());
+		}
 	}
 }
 
