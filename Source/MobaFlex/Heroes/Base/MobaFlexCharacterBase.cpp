@@ -66,9 +66,12 @@ void AMobaFlexCharacterBase::BeginPlay()
 			PlayBaseAttributeSet->MaxMana.SetCurrentValue(MaxMana);
 			PlayBaseAttributeSet->MaxStamina.SetCurrentValue(MaxStamina);
 			PlayBaseAttributeSet->MaxArmor.SetCurrentValue(MaxArmor);
-			//Giving Jump Ability
-			GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_GiveAbility(this, this->JumpAbilityClass, false);
-			GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_GiveAbility(this, this->SprintAbilityClass, false);
+            // Only give abilities on the server
+            if (HasAuthority())
+            {
+                GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_GiveAbility(this, this->JumpAbilityClass, false);
+                GetGameInstance()->GetSubsystem<UAbilityHelperSubSystem>()->Server_GiveAbility(this, this->SprintAbilityClass, false);
+            }
 		}
 	}
 	
@@ -184,7 +187,7 @@ UAbilitySystemComponent* AMobaFlexCharacterBase::GetAbilitySystemComponent() con
 
 void AMobaFlexCharacterBase::UpdateHealthVM()
 {
-	if (LocalPlayerHUDViewModel)
+	if (LocalPlayerHUDViewModel && IsLocallyControlled())
 	{
 		LocalPlayerHUDViewModel->SetHealth(PlayBaseAttributeSet->Health.GetCurrentValue());
 		LocalPlayerHUDViewModel->SetMaxHealth(PlayBaseAttributeSet->MaxHealth.GetCurrentValue());
